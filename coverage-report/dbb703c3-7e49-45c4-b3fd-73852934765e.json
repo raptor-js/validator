@@ -1,0 +1,70 @@
+{
+  "scriptId": "375",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/integer.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 426,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 86,
+          "endOffset": 120,
+          "count": 97
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 123,
+          "endOffset": 348,
+          "count": 5
+        },
+        {
+          "startOffset": 203,
+          "endOffset": 229,
+          "count": 0
+        },
+        {
+          "startOffset": 264,
+          "endOffset": 279,
+          "count": 4
+        },
+        {
+          "startOffset": 281,
+          "endOffset": 308,
+          "count": 1
+        },
+        {
+          "startOffset": 308,
+          "endOffset": 347,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 351,
+          "endOffset": 423,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

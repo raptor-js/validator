@@ -1,0 +1,103 @@
+{
+  "scriptId": "390",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/greater-than-or-equal.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1060,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 110,
+          "endOffset": 119,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "GreaterThanOrEqualRule",
+      "ranges": [
+        {
+          "startOffset": 123,
+          "endOffset": 182,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 185,
+          "endOffset": 215,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 218,
+          "endOffset": 443,
+          "count": 4
+        },
+        {
+          "startOffset": 298,
+          "endOffset": 324,
+          "count": 0
+        },
+        {
+          "startOffset": 376,
+          "endOffset": 403,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 446,
+          "endOffset": 550,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "make",
+      "ranges": [
+        {
+          "startOffset": 667,
+          "endOffset": 1005,
+          "count": 4
+        },
+        {
+          "startOffset": 711,
+          "endOffset": 789,
+          "count": 0
+        },
+        {
+          "startOffset": 861,
+          "endOffset": 951,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

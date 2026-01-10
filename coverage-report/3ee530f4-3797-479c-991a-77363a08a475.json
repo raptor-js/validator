@@ -1,0 +1,55 @@
+{
+  "scriptId": "371",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/boolean.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 348,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 85,
+          "endOffset": 119,
+          "count": 97
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 122,
+          "endOffset": 271,
+          "count": 3
+        },
+        {
+          "startOffset": 202,
+          "endOffset": 228,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 274,
+          "endOffset": 345,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

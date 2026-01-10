@@ -1,0 +1,127 @@
+{
+  "scriptId": "335",
+  "url": "file:///Users/bri/Code/raptor-validator/src/validator.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1735,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 163,
+          "endOffset": 169,
+          "count": 97
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "Validator",
+      "ranges": [
+        {
+          "startOffset": 267,
+          "endOffset": 337,
+          "count": 97
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getParser",
+      "ranges": [
+        {
+          "startOffset": 421,
+          "endOffset": 462,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 635,
+          "endOffset": 1210,
+          "count": 97
+        },
+        {
+          "startOffset": 713,
+          "endOffset": 1027,
+          "count": 118
+        },
+        {
+          "startOffset": 833,
+          "endOffset": 1021,
+          "count": 182
+        },
+        {
+          "startOffset": 932,
+          "endOffset": 1013,
+          "count": 49
+        },
+        {
+          "startOffset": 1137,
+          "endOffset": 1143,
+          "count": 49
+        },
+        {
+          "startOffset": 1144,
+          "endOffset": 1155,
+          "count": 48
+        },
+        {
+          "startOffset": 1179,
+          "endOffset": 1190,
+          "count": 49
+        },
+        {
+          "startOffset": 1191,
+          "endOffset": 1199,
+          "count": 48
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validateRule",
+      "ranges": [
+        {
+          "startOffset": 1485,
+          "endOffset": 1732,
+          "count": 182
+        },
+        {
+          "startOffset": 1605,
+          "endOffset": 1631,
+          "count": 133
+        },
+        {
+          "startOffset": 1631,
+          "endOffset": 1668,
+          "count": 49
+        },
+        {
+          "startOffset": 1668,
+          "endOffset": 1696,
+          "count": 0
+        },
+        {
+          "startOffset": 1696,
+          "endOffset": 1731,
+          "count": 49
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

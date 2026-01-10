@@ -1,0 +1,103 @@
+{
+  "scriptId": "389",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/greater-than.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 999,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 91,
+          "endOffset": 100,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "GreaterThanRule",
+      "ranges": [
+        {
+          "startOffset": 104,
+          "endOffset": 163,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 166,
+          "endOffset": 195,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 198,
+          "endOffset": 422,
+          "count": 4
+        },
+        {
+          "startOffset": 278,
+          "endOffset": 304,
+          "count": 0
+        },
+        {
+          "startOffset": 356,
+          "endOffset": 383,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 425,
+          "endOffset": 517,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "make",
+      "ranges": [
+        {
+          "startOffset": 627,
+          "endOffset": 955,
+          "count": 4
+        },
+        {
+          "startOffset": 671,
+          "endOffset": 747,
+          "count": 0
+        },
+        {
+          "startOffset": 819,
+          "endOffset": 908,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "scriptId": "385",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/min.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 1145,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [
+        {
+          "startOffset": 113,
+          "endOffset": 120,
+          "count": 10
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "MinRule",
+      "ranges": [
+        {
+          "startOffset": 124,
+          "endOffset": 177,
+          "count": 10
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 180,
+          "endOffset": 210,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": false
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 213,
+          "endOffset": 586,
+          "count": 10
+        },
+        {
+          "startOffset": 293,
+          "endOffset": 319,
+          "count": 0
+        },
+        {
+          "startOffset": 355,
+          "endOffset": 405,
+          "count": 3
+        },
+        {
+          "startOffset": 405,
+          "endOffset": 441,
+          "count": 7
+        },
+        {
+          "startOffset": 441,
+          "endOffset": 484,
+          "count": 4
+        },
+        {
+          "startOffset": 484,
+          "endOffset": 565,
+          "count": 3
+        },
+        {
+          "startOffset": 565,
+          "endOffset": 585,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 589,
+          "endOffset": 685,
+          "count": 4
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "make",
+      "ranges": [
+        {
+          "startOffset": 787,
+          "endOffset": 1105,
+          "count": 10
+        },
+        {
+          "startOffset": 831,
+          "endOffset": 908,
+          "count": 0
+        },
+        {
+          "startOffset": 978,
+          "endOffset": 1068,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "scriptId": "376",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/lowercase.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 427,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 96,
+          "endOffset": 132,
+          "count": 97
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 135,
+          "endOffset": 350,
+          "count": 4
+        },
+        {
+          "startOffset": 215,
+          "endOffset": 241,
+          "count": 0
+        },
+        {
+          "startOffset": 277,
+          "endOffset": 304,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 353,
+          "endOffset": 424,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

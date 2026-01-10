@@ -1,0 +1,65 @@
+{
+  "scriptId": "382",
+  "url": "file:///Users/bri/Code/raptor-validator/src/rules/alpha-dash.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [
+        {
+          "startOffset": 0,
+          "endOffset": 618,
+          "count": 1
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "name",
+      "ranges": [
+        {
+          "startOffset": 137,
+          "endOffset": 174,
+          "count": 97
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "validate",
+      "ranges": [
+        {
+          "startOffset": 177,
+          "endOffset": 499,
+          "count": 5
+        },
+        {
+          "startOffset": 257,
+          "endOffset": 283,
+          "count": 0
+        },
+        {
+          "startOffset": 319,
+          "endOffset": 346,
+          "count": 0
+        },
+        {
+          "startOffset": 375,
+          "endOffset": 402,
+          "count": 0
+        }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "message",
+      "ranges": [
+        {
+          "startOffset": 502,
+          "endOffset": 615,
+          "count": 2
+        }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}
