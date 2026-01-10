@@ -1,3 +1,6 @@
+/// <reference lib="deno.ns" />
+// deno-lint-ignore-file
+
 import Validator from "../src/validator.ts";
 import { assertEquals, assertExists } from "@std/assert";
 

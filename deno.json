@@ -2,6 +2,9 @@
   "name": "@raptor/validator",
   "version": "0.5.0",
   "exports": "./mod.ts",
+  "compilerOptions": {
+    "lib": ["deno.ns", "deno.window"]
+  },
   "publish": {
     "exclude": [
       ".github",
