@@ -1,4 +1,5 @@
 import type { Rule } from "./interfaces/rule.ts";
+
 import RuleParser from "./rule-parser.ts";
 
 type ValidationResult = {
@@ -49,6 +50,7 @@ export default class Validator {
 
     for (const field in schema) {
       const rules = this.parser.parse(schema[field]);
+
       const value = data[field];
 
       for (const rule of rules) {

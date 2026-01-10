@@ -3,3 +3,9 @@ examples
 
 # Ignore types file.
 types.d.ts
+
+# Coverage reports
+cov_profile
+
+# Ignore built dependencies.
+node_modules
