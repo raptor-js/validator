@@ -6,7 +6,7 @@ import RuleParser from "./src/rule-parser.ts";
 export type { Rule } from "./src/interfaces/rule.ts";
 export type { InferSchema } from "./src/types/infer-schema.ts";
 
-export { Validator, RuleParser };
+export { RuleParser, Validator };
 
 export { default as RequiredRule } from "./src/rules/required.ts";
 export { default as StringRule } from "./src/rules/string.ts";

@@ -17,7 +17,7 @@ class StartsWithRule implements Rule {
    * Validate a value against this rule.
    *
    * @param value The value to validate.
-   * 
+   *
    * @returns True if valid, error message string if invalid.
    */
   public validate(value: unknown): boolean | string {
@@ -53,7 +53,7 @@ export class StartsWithRuleFactory implements RuleFactory {
    * Create a new instance of the rule with parameters.
    *
    * @param params Parameters from the rule string (e.g., starts_with:http,https)).
-   * 
+   *
    * @returns A new Rule instance.
    */
   public make(params: string[]): Rule {
