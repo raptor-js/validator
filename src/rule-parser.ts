@@ -17,14 +17,14 @@ import AlphaDashRule from "./rules/alpha-dash.ts";
 import UrlRule from "./rules/url.ts";
 import DateRule from "./rules/date.ts";
 
-import minFactory from "./rules/min.ts";
-import maxFactory from "./rules/max.ts";
-import startsWithFactory from "./rules/starts-with.ts";
-import endsWithFactory from "./rules/ends-with.ts";
-import greaterThanFactory from "./rules/greater-than.ts";
-import greaterThanOrEqualFactory from "./rules/greater-than-or-equal.ts";
-import lessThanFactory from "./rules/less-than.ts";
-import lessThanOrEqualFactory from "./rules/less-than-or-equal.ts";
+import MinRuleFactory from "./rules/min.ts";
+import MaxRuleFactory from "./rules/max.ts";
+import StartsWithRuleFactory from "./rules/starts-with.ts";
+import EndsWithRuleFactory from "./rules/ends-with.ts";
+import GreaterThanRuleFactory from "./rules/greater-than.ts";
+import GreaterThanOrEqualRuleFactory from "./rules/greater-than-or-equal.ts";
+import LessThanRuleFactory from "./rules/less-than.ts";
+import LessThanOrEqualRuleFactory from "./rules/less-than-or-equal.ts";
 
 /**
  * Parses and manages validation rules.
@@ -163,13 +163,13 @@ export default class RuleParser {
    * Register the default rule factories.
    */
   private registerDefaultFactories(): void {
-    this.registerFactory("min", minFactory);
-    this.registerFactory("max", maxFactory);
-    this.registerFactory("starts_with", startsWithFactory);
-    this.registerFactory("ends_with", endsWithFactory);
-    this.registerFactory("gt", greaterThanFactory);
-    this.registerFactory("gte", greaterThanOrEqualFactory);
-    this.registerFactory("lt", lessThanFactory);
-    this.registerFactory("lte", lessThanOrEqualFactory);
+    this.registerFactory("min", new MinRuleFactory());
+    this.registerFactory("max", new MaxRuleFactory());
+    this.registerFactory("starts_with", new StartsWithRuleFactory());
+    this.registerFactory("ends_with", new EndsWithRuleFactory());
+    this.registerFactory("gt", new GreaterThanRuleFactory());
+    this.registerFactory("gte", new GreaterThanOrEqualRuleFactory());
+    this.registerFactory("lt", new LessThanRuleFactory());
+    this.registerFactory("lte", new LessThanOrEqualRuleFactory());
   }
 }

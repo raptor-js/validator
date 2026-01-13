@@ -1,12 +1,12 @@
-// Copyright 2025, @briward. All rights reserved. MIT license.
+// Copyright 2026, @briward. All rights reserved. MIT license.
 
-import Middleware from "./src/middleware.ts";
+import Validator from "./src/validator.ts";
 import RuleParser from "./src/rule-parser.ts";
 
 export type { Rule } from "./src/interfaces/rule.ts";
-export type { InferSchema } from "./src/middleware.ts";
+export type { InferSchema } from "./src/types/infer-schema.ts";
 
-export { Middleware as Validator, RuleParser };
+export { Validator, RuleParser };
 
 export { default as RequiredRule } from "./src/rules/required.ts";
 export { default as StringRule } from "./src/rules/string.ts";

@@ -1,12 +1,14 @@
+import { type Context, UnprocessableEntity } from "@raptor/framework";
+
 import type { Rule } from "./interfaces/rule.ts";
+import type { InferSchema } from "./types/infer-schema.ts";
+import type { ValidationResult } from "./types/validation-result.ts";
 
 import RuleParser from "./rule-parser.ts";
 
-type ValidationResult = {
-  valid: boolean;
-  data?: Record<string, unknown>;
-  errors?: Record<string, string[]>;
-};
+const kValidate = Symbol.for("raptor.request.validate");
+
+const bodyCache = new WeakMap<Request, unknown>();
 
 /**
  * Validates data against a schema.
@@ -24,6 +26,22 @@ export default class Validator {
    */
   constructor(parser?: RuleParser) {
     this.parser = parser ?? new RuleParser();
+  }
+
+  /**
+   * Handle the validation middleware.
+   *
+   * @param context The current HTTP context.
+   * @param next The next middleware function.
+   */
+  public handle(context: Context, next: CallableFunction): CallableFunction {
+    const { request } = context;
+
+    if (!(kValidate in request)) {
+      this.attachValidateMethod(request);
+    }
+
+    return next();
   }
 
   /**
@@ -99,4 +117,65 @@ export default class Validator {
 
     return rule.message(field);
   }
+
+  /**
+   * Attach the validate method to the request object.
+   *
+   * @param request The HTTP request.
+   */
+  private attachValidateMethod(request: Request): void {
+    Object.defineProperty(request, kValidate, {
+      value: async function <T extends Record<string, string>>(schema: T) {
+        const body = await getRequestBody(this);
+
+        const result = this.validate(
+          body as Record<string, unknown>,
+          schema,
+        );
+
+        if (!result.valid && result.errors) {
+          throw new UnprocessableEntity(result.errors);
+        }
+
+        return result.data as InferSchema<T>;
+      },
+      writable: false,
+      configurable: false,
+    });
+
+    Object.defineProperty(request, "validate", {
+      get(this: Request) {
+        return (this as unknown as Record<symbol, unknown>)[kValidate];
+      },
+      configurable: false,
+    });
+  }
+}
+
+/**
+ * Get and cache the request body.
+ *
+ * @param request The HTTP request.
+ * @returns The parsed body.
+ */
+async function getRequestBody(request: Request): Promise<unknown> {
+  let body = bodyCache.get(request);
+
+  if (body !== undefined) {
+    return body;
+  }
+
+  try {
+    body = await request.json();
+  } catch (e) {
+    if (e instanceof SyntaxError) {
+      body = {};
+    } else {
+      throw e;
+    }
+  }
+
+  bodyCache.set(request, body);
+
+  return body;
 }

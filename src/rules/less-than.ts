@@ -6,15 +6,21 @@ import type { Rule, RuleFactory } from "../interfaces/rule.ts";
 class LessThanRule implements Rule {
   constructor(private threshold: number) {}
 
+  /**
+   * The name identifier for this rule (without parameters).
+   */
   public name(): string {
     return "lt";
   }
 
-  public validate(
-    value: unknown,
-    _field: string,
-    _data: Record<string, unknown>,
-  ): boolean | string {
+  /**
+   * Validate a value against this rule.
+   *
+   * @param value The value to validate.
+   * 
+   * @returns True if valid, error message string if invalid.
+   */
+  public validate(value: unknown): boolean | string {
     if (value === undefined || value === null) {
       return true;
     }
@@ -26,6 +32,12 @@ class LessThanRule implements Rule {
     return value < this.threshold;
   }
 
+  /**
+   * Get the default error message for this rule.
+   *
+   * @param field The field name being validated.
+   * @returns The error message.
+   */
   public message(field: string): string {
     return `The ${field} field must be less than ${this.threshold}`;
   }
@@ -35,6 +47,13 @@ class LessThanRule implements Rule {
  * Factory for creating LessThanRule instances with parameters.
  */
 export class LessThanRuleFactory implements RuleFactory {
+  /**
+   * Create a new instance of the rule with parameters.
+   *
+   * @param params Parameters from the rule string (e.g., lt:100)).
+   * 
+   * @returns A new Rule instance.
+   */
   public make(params: string[]): Rule {
     if (params.length === 0) {
       throw new Error("lt rule requires a parameter (e.g., lt:100)");
@@ -52,4 +71,4 @@ export class LessThanRuleFactory implements RuleFactory {
   }
 }
 
-export default new LessThanRuleFactory() as RuleFactory;
+export default LessThanRuleFactory;
