@@ -3,7 +3,7 @@
 import Validator from "./src/validator.ts";
 import RuleParser from "./src/rule-parser.ts";
 
-export type { Rule } from "./src/interfaces/rule.ts";
+export type { Rule, RuleFactory } from "./src/interfaces/rule.ts";
 export type { InferSchema } from "./src/types/infer-schema.ts";
 
 export { RuleParser, Validator };

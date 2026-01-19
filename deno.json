@@ -1,6 +1,6 @@
 {
   "name": "@raptor/validator",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "exports": "./mod.ts",
   "compilerOptions": {
     "lib": ["deno.ns", "deno.window"]
