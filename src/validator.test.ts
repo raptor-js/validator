@@ -1,7 +1,7 @@
 /// <reference lib="deno.ns" />
 // deno-lint-ignore-file
 
-import Validator from "../src/validator.ts";
+import Validator from "./validator.ts";
 import { assertEquals, assertExists } from "@std/assert";
 
 Deno.test("validator handles valid string field", () => {
