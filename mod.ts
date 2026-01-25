@@ -2,6 +2,7 @@
 
 import Validator from "./src/validator.ts";
 import RuleParser from "./src/rule-parser.ts";
+import helper from "./src/helper.ts";
 
 export type { Rule, RuleFactory } from "./src/interfaces/rule.ts";
 export type { InferSchema } from "./src/types/infer-schema.ts";
@@ -33,3 +34,5 @@ export { default as LessThanRule } from "./src/rules/less-than.ts";
 export { default as LessThanOrEqualRule } from "./src/rules/less-than-or-equal.ts";
 export { default as StartsWithRule } from "./src/rules/starts-with.ts";
 export { default as EndsWithRule } from "./src/rules/ends-with.ts";
+
+export default helper;

@@ -1,4 +1,8 @@
-import { type Context, UnprocessableEntity } from "@raptor/framework";
+import {
+  type Context,
+  type Middleware,
+  UnprocessableEntity,
+} from "@raptor/framework";
 
 import type { Rule } from "./interfaces/rule.ts";
 import type { InferSchema } from "./types/infer-schema.ts";
@@ -29,12 +33,24 @@ export default class Validator {
   }
 
   /**
+   * Wrapper to pre-bind this to the validation handler method.
+   */
+  public get handle(): Middleware {
+    return (context: Context, next: CallableFunction) => {
+      return this.handleValidation(context, next);
+    };
+  }
+
+  /**
    * Handle the validation middleware.
    *
    * @param context The current HTTP context.
    * @param next The next middleware function.
    */
-  public handle(context: Context, next: CallableFunction): CallableFunction {
+  public handleValidation(
+    context: Context,
+    next: CallableFunction,
+  ): unknown {
     const { request } = context;
 
     if (!(kValidate in request)) {
