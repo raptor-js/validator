@@ -1,30 +1,30 @@
 import type { Rule, RuleFactory } from "./interfaces/rule.ts";
 
-import StringRule from "./rules/string.ts";
-import NumericRule from "./rules/numeric.ts";
-import BooleanRule from "./rules/boolean.ts";
-import RequiredRule from "./rules/required.ts";
-import AlphaRule from "./rules/alpha.ts";
-import DecimalRule from "./rules/decimal.ts";
-import IntegerRule from "./rules/integer.ts";
-import LowercaseRule from "./rules/lowercase.ts";
-import UppercaseRule from "./rules/uppercase.ts";
-import EmailRule from "./rules/email.ts";
-import ArrayRule from "./rules/array.ts";
-import JsonRule from "./rules/json.ts";
-import AlphaNumRule from "./rules/alpha-numeric.ts";
-import AlphaDashRule from "./rules/alpha-dash.ts";
-import UrlRule from "./rules/url.ts";
-import DateRule from "./rules/date.ts";
+import UrlRule from "./rules/url/rule.ts";
+import JsonRule from "./rules/json/rule.ts";
+import DateRule from "./rules/date/rule.ts";
+import AlphaRule from "./rules/alpha/rule.ts";
+import EmailRule from "./rules/email/rule.ts";
+import ArrayRule from "./rules/array/rule.ts";
+import StringRule from "./rules/string/rule.ts";
+import NumericRule from "./rules/numeric/rule.ts";
+import BooleanRule from "./rules/boolean/rule.ts";
+import DecimalRule from "./rules/decimal/rule.ts";
+import IntegerRule from "./rules/integer/rule.ts";
+import RequiredRule from "./rules/required/rule.ts";
+import LowercaseRule from "./rules/lowercase/rule.ts";
+import UppercaseRule from "./rules/uppercase/rule.ts";
+import AlphaDashRule from "./rules/alpha-dash/rule.ts";
+import AlphaNumRule from "./rules/alpha-numeric/rule.ts";
 
-import MinRuleFactory from "./rules/min.ts";
-import MaxRuleFactory from "./rules/max.ts";
-import StartsWithRuleFactory from "./rules/starts-with.ts";
-import EndsWithRuleFactory from "./rules/ends-with.ts";
-import GreaterThanRuleFactory from "./rules/greater-than.ts";
-import GreaterThanOrEqualRuleFactory from "./rules/greater-than-or-equal.ts";
-import LessThanRuleFactory from "./rules/less-than.ts";
-import LessThanOrEqualRuleFactory from "./rules/less-than-or-equal.ts";
+import MinRuleFactory from "./rules/min/rule.ts";
+import MaxRuleFactory from "./rules/max/rule.ts";
+import EndsWithRuleFactory from "./rules/ends-with/rule.ts";
+import LessThanRuleFactory from "./rules/less-than/rule.ts";
+import StartsWithRuleFactory from "./rules/starts-with/rule.ts";
+import GreaterThanRuleFactory from "./rules/greater-than/rule.ts";
+import LessThanOrEqualRuleFactory from "./rules/less-than-or-equal/rule.ts";
+import GreaterThanOrEqualRuleFactory from "./rules/greater-than-or-equal/rule.ts";
 
 /**
  * Parses and manages validation rules.
@@ -51,10 +51,11 @@ export default class RuleParser {
   /**
    * Register a non-parameterized validation rule.
    *
+   * @param name The name of the rule to register.
    * @param rule The rule instance to register.
    */
-  public register(rule: Rule): void {
-    this.rules.set(rule.name(), rule);
+  public register(name: string, rule: Rule): void {
+    this.rules.set(name, rule);
   }
 
   /**
@@ -141,22 +142,22 @@ export default class RuleParser {
    * Register the default validation rules.
    */
   private registerDefaultRules(): void {
-    this.register(new RequiredRule());
-    this.register(new StringRule());
-    this.register(new NumericRule());
-    this.register(new BooleanRule());
-    this.register(new DecimalRule());
-    this.register(new IntegerRule());
-    this.register(new AlphaRule());
-    this.register(new LowercaseRule());
-    this.register(new UppercaseRule());
-    this.register(new EmailRule());
-    this.register(new ArrayRule());
-    this.register(new JsonRule());
-    this.register(new AlphaNumRule());
-    this.register(new AlphaDashRule());
-    this.register(new UrlRule());
-    this.register(new DateRule());
+    this.register("required", new RequiredRule());
+    this.register("string", new StringRule());
+    this.register("numeric", new NumericRule());
+    this.register("boolean", new BooleanRule());
+    this.register("decimal", new DecimalRule());
+    this.register("integer", new IntegerRule());
+    this.register("alpha", new AlphaRule());
+    this.register("lowercase", new LowercaseRule());
+    this.register("uppercase", new UppercaseRule());
+    this.register("email", new EmailRule());
+    this.register("array", new ArrayRule());
+    this.register("json", new JsonRule());
+    this.register("alpha_num", new AlphaNumRule());
+    this.register("alpha_dash", new AlphaDashRule());
+    this.register("url", new UrlRule());
+    this.register("date", new DateRule());
   }
 
   /**

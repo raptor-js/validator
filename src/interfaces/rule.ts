@@ -3,11 +3,6 @@
  */
 export interface Rule {
   /**
-   * The name identifier for this rule (without parameters).
-   */
-  name(): string;
-
-  /**
    * Validate a value against this rule.
    *
    * @param value The value to validate.
