@@ -141,8 +141,8 @@ export default class Validator {
    */
   private attachValidateMethod(request: Request): void {
     Object.defineProperty(request, kValidate, {
-      value: async function <T extends Record<string, string>>(schema: T) {
-        const body = await getRequestBody(this);
+      value: async <T extends Record<string, string>>(schema: T) => {
+        const body = await getRequestBody(request);
 
         const result = this.validate(
           body as Record<string, unknown>,
