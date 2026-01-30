@@ -15,7 +15,7 @@ See more information about the Raptor framework here: <a href="https://raptorfra
 
 ## Installation
 
-For installation instructions, please visit <a href="https://raptorframework.com/docs/extensions/validator">https://raptorframework.com/docs/extensions/validator</a>
+For installation instructions, please visit <a href="https://raptorframework.com/docs/packages/validator">https://raptorframework.com/docs/packages/validator</a>
 
 ## Documentation
 
