@@ -5,7 +5,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
  * 
  * @param maximum The maximum length or value.
  *
- * @returns A Standard Schema validator.
+ * @returns A standard schema validator.
  */
 export function max(maximum: number): StandardSchemaV1<string | number | unknown[]> {
   return {

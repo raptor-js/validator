@@ -5,7 +5,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
  * 
  * @param minimum The minimum length or value.
  *
- * @returns A Standard Schema validator.
+ * @returns A standard schema validator.
  */
 export function min(minimum: number): StandardSchemaV1<string | number | unknown[]> {
   return {

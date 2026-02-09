@@ -3,7 +3,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 /**
  * Validates that a field is present and not null/undefined/empty.
  * 
- * @returns A Standard Schema validator.
+ * @returns A standard schema validator.
  */
 export function required(): StandardSchemaV1<unknown> {
   return {

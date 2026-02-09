@@ -3,7 +3,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 /**
  * Validates that a field is a string.
  * 
- * @returns A Standard Schema validator.
+ * @returns A standard schema validator.
  */
 export function string(): StandardSchemaV1<string> {
   return {

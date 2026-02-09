@@ -3,11 +3,11 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 import RuleParser from "./rule-parser.ts";
 
 /**
- * Creates a validator from a Laravel-style pipe-separated rule string.
+ * Creates a validator from a pipe-separated rule string.
  * 
- * @param ruleString Pipe-separated validation rules (e.g., "required|string|min:8")
+ * @param ruleString A pipe-separated rule (e.g., "required|string|min:8")
  *
- * @returns A Standard Schema validator that runs all rules in sequence
+ * @returns A standard schema validator that runs all rules in sequence.
  */
 export function pipe<T = unknown>(ruleString: string): StandardSchemaV1<T> {
   const parser = new RuleParser();
