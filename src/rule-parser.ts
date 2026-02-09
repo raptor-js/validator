@@ -1,9 +1,10 @@
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 
-import { min } from "./rules/min.ts";
-import { max } from "./rules/max.ts";
-import { string } from "./rules/string.ts";
-import { required } from "./rules/required.ts";
+import { min } from "./rules/min/rule.ts";
+import { max } from "./rules/max/rule.ts";
+import { string } from "./rules/string/rule.ts";
+import { required } from "./rules/required/rule.ts";
+import { numeric } from "./rules/numeric/rule.ts";
 
 type RuleFactory = (...args: any[]) => StandardSchemaV1<any>;
 
@@ -41,7 +42,10 @@ export default class RuleParser {
    * @returns An array of standard schema validators.
    */
   public parse(ruleString: string): StandardSchemaV1<any>[] {
-    const ruleNames = ruleString.split("|").map((r) => r.trim());
+    const ruleNames = ruleString
+      .split("|")
+      .map((r) => r.trim())
+      .filter((r) => r.length > 0);
 
     const validators: StandardSchemaV1<any>[] = [];
 
@@ -66,28 +70,28 @@ export default class RuleParser {
       const [name, ...paramParts] = ruleString.split(":");
 
       const params = paramParts.join(":").split(",").map((p) => p.trim());
-      
+
       const factory = this.factories.get(name);
-      
+
       if (!factory) {
         throw new Error(`Unknown validation rule: ${name}`);
       }
-      
+
       const parsedParams = params.map(p => {
         const num = parseInt(p, 10);
 
         return isNaN(num) ? p : num;
       });
-      
+
       return factory(...parsedParams);
     }
 
     const factory = this.factories.get(ruleString);
-    
+
     if (!factory) {
       throw new Error(`Unknown validation rule: ${ruleString}`);
     }
-    
+
     return factory();
   }
 
@@ -114,6 +118,7 @@ export default class RuleParser {
   private registerDefaultRules(): void {
     this.register("required", required);
     this.register("string", string);
+    this.register("numeric", numeric);
     this.register("min", min);
     this.register("max", max);
   }
