@@ -8,7 +8,9 @@ Deno.test("required rule validates non-empty value successfully", async () => {
   const result = await requiredSchema["~standard"].validate("test");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "test");

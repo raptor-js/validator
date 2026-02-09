@@ -8,7 +8,9 @@ Deno.test("min rule validates string meeting minimum length", async () => {
   const result = await minSchema["~standard"].validate("hello");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello");
@@ -24,7 +26,10 @@ Deno.test("min rule rejects string below minimum length", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be at least 5 in length");
+  assertEquals(
+    result.issues[0].message,
+    "The field must be at least 5 in length",
+  );
 });
 
 Deno.test("min rule validates number meeting minimum value", async () => {
@@ -33,7 +38,9 @@ Deno.test("min rule validates number meeting minimum value", async () => {
   const result = await minSchema["~standard"].validate(25);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 25);
@@ -58,7 +65,9 @@ Deno.test("min rule validates array meeting minimum length", async () => {
   const result = await minSchema["~standard"].validate([1, 2, 3]);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, [1, 2, 3]);

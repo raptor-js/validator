@@ -6,7 +6,7 @@ import { string } from "./rules/string/rule.ts";
 import { required } from "./rules/required/rule.ts";
 import { numeric } from "./rules/numeric/rule.ts";
 
-type RuleFactory = (...args: any[]) => StandardSchemaV1<any>;
+type RuleFactory = (...args: unknown[]) => StandardSchemaV1<unknown>;
 
 /**
  * Parses pipe-separated rule strings into standard schema validators.
@@ -41,13 +41,13 @@ export default class RuleParser {
    *
    * @returns An array of standard schema validators.
    */
-  public parse(ruleString: string): StandardSchemaV1<any>[] {
+  public parse(ruleString: string): StandardSchemaV1<unknown>[] {
     const ruleNames = ruleString
       .split("|")
       .map((r) => r.trim())
       .filter((r) => r.length > 0);
 
-    const validators: StandardSchemaV1<any>[] = [];
+    const validators: StandardSchemaV1<unknown>[] = [];
 
     for (const ruleName of ruleNames) {
       const validator = this.parseRule(ruleName);
@@ -65,7 +65,7 @@ export default class RuleParser {
    *
    * @returns A standard schema validator.
    */
-  private parseRule(ruleString: string): StandardSchemaV1<any> {
+  private parseRule(ruleString: string): StandardSchemaV1<unknown> {
     if (ruleString.includes(":")) {
       const [name, ...paramParts] = ruleString.split(":");
 
@@ -77,7 +77,7 @@ export default class RuleParser {
         throw new Error(`Unknown validation rule: ${name}`);
       }
 
-      const parsedParams = params.map(p => {
+      const parsedParams = params.map((p) => {
         const num = parseInt(p, 10);
 
         return isNaN(num) ? p : num;
@@ -116,10 +116,10 @@ export default class RuleParser {
    * Register the default validation rules.
    */
   private registerDefaultRules(): void {
-    this.register("required", required);
-    this.register("string", string);
-    this.register("numeric", numeric);
-    this.register("min", min);
-    this.register("max", max);
+    this.register("required", required as RuleFactory);
+    this.register("string", string as RuleFactory);
+    this.register("numeric", numeric as RuleFactory);
+    this.register("min", min as RuleFactory);
+    this.register("max", max as RuleFactory);
   }
 }

@@ -3,7 +3,4 @@
 import { pipe } from "./src/pipe.ts";
 import { schema } from "./src/schema.ts";
 
-export {
-  pipe,
-  schema,
-};
+export { pipe, schema };

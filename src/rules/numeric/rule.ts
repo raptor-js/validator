@@ -2,22 +2,22 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is numeric (either a number or a numeric string).
- * 
+ *
  * @returns A standard schema validator.
  */
-export function numeric(): StandardSchemaV1<number> {
+export function numeric(): StandardSchemaV1<unknown> {
   return {
     "~standard": {
       version: 1,
       vendor: "raptor",
       validate(value) {
         if (value === undefined || value === null) {
-          return { value: value as any };
+          return { value };
         }
 
         if (typeof value === "number" && !isNaN(value)) {
           return {
-            value
+            value,
           };
         }
 
@@ -32,10 +32,10 @@ export function numeric(): StandardSchemaV1<number> {
         return {
           issues: [{
             message: "The field must be numeric",
-            path: []
-          }]
+            path: [],
+          }],
         };
-      }
-    }
+      },
+    },
   };
 }

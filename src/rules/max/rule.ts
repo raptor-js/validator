@@ -2,27 +2,29 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field meets a maximum length (for strings/arrays) or value (for numbers).
- * 
+ *
  * @param maximum The maximum length or value.
  *
  * @returns A standard schema validator.
  */
-export function max(maximum: number): StandardSchemaV1<string | number | unknown[]> {
+export function max(
+  maximum: number,
+): StandardSchemaV1<unknown> {
   return {
     "~standard": {
       version: 1,
       vendor: "raptor",
       validate(value) {
         if (value === undefined || value === null) {
-          return { value: value as any };
+          return { value };
         }
 
         if (typeof value === "string" && value.length > maximum) {
           return {
             issues: [{
               message: `The field must be no more than ${maximum} in length`,
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -30,8 +32,8 @@ export function max(maximum: number): StandardSchemaV1<string | number | unknown
           return {
             issues: [{
               message: `The field must be no more than ${maximum}`,
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -39,13 +41,13 @@ export function max(maximum: number): StandardSchemaV1<string | number | unknown
           return {
             issues: [{
               message: `The field must be no more than ${maximum} in length`,
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

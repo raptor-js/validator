@@ -8,7 +8,9 @@ Deno.test("max rule validates string within maximum length", async () => {
   const result = await maxSchema["~standard"].validate("hello");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello");
@@ -24,7 +26,10 @@ Deno.test("max rule rejects string exceeding maximum length", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be no more than 3 in length");
+  assertEquals(
+    result.issues[0].message,
+    "The field must be no more than 3 in length",
+  );
 });
 
 Deno.test("max rule validates number within maximum value", async () => {
@@ -33,7 +38,9 @@ Deno.test("max rule validates number within maximum value", async () => {
   const result = await maxSchema["~standard"].validate(50);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 50);
@@ -58,7 +65,9 @@ Deno.test("max rule validates array within maximum length", async () => {
   const result = await maxSchema["~standard"].validate([1, 2]);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, [1, 2]);

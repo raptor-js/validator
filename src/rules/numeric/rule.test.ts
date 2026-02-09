@@ -11,7 +11,9 @@ Deno.test("numeric rule validates number successfully", async () => {
   const result = await numericSchema["~standard"].validate(18);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 18);
@@ -23,7 +25,9 @@ Deno.test("numeric rule validates numeric string successfully", async () => {
   const result = await numericSchema["~standard"].validate("42");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 42);

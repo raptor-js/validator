@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is present and not null/undefined/empty.
- * 
+ *
  * @returns A standard schema validator.
  */
 export function required(): StandardSchemaV1<unknown> {
@@ -15,8 +15,8 @@ export function required(): StandardSchemaV1<unknown> {
           return {
             issues: [{
               message: "The field is required",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -24,14 +24,13 @@ export function required(): StandardSchemaV1<unknown> {
           return {
             issues: [{
               message: "The field is required",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }
-

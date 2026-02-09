@@ -8,7 +8,9 @@ Deno.test("string rule validates string successfully", async () => {
   const result = await stringSchema["~standard"].validate("hello");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello");
