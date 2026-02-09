@@ -3,7 +3,7 @@
 
 import { assertEquals, assertExists, assertThrows } from "@std/assert";
 
-import RuleParser from "./rule-parser.ts";
+import RuleParser, { type RuleFactory } from "./rule-parser.ts";
 
 Deno.test("rule parser parses single non-parameterized rule", () => {
   const parser = new RuleParser();
@@ -113,13 +113,13 @@ Deno.test("rule parser parses numeric parameter", async () => {
 Deno.test("rule parser parses multiple parameters", () => {
   const parser = new RuleParser();
 
-  const mockFactory = (...params: any[]) => ({
+  const mockFactory = ((...params: any[]) => ({
     "~standard": {
       version: 1 as const,
       vendor: "test",
       validate: () => ({ value: params }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("multi", mockFactory);
 
@@ -128,34 +128,33 @@ Deno.test("rule parser parses multiple parameters", () => {
   assertEquals(validators.length, 1);
 });
 
-Deno.test("rule parser parses string parameter", () => {
+Deno.test("RuleParser parses string parameter", () => {
   const parser = new RuleParser();
-
-  const mockFactory = (param: string) => ({
+  
+  const mockFactory = ((param: string) => ({
     "~standard": {
       version: 1 as const,
       vendor: "test",
-      validate: () => ({ value: param }),
-    },
-  });
-
+      validate: () => ({ value: param })
+    }
+  })) as RuleFactory;
+  
   parser.register("custom", mockFactory);
-
+  
   const validators = parser.parse("custom:value");
-
   assertEquals(validators.length, 1);
 });
 
 Deno.test("rule parser handles colon in parameter value", () => {
   const parser = new RuleParser();
 
-  const mockFactory = (param: string) => ({
+  const mockFactory = ((param: string) => ({
     "~standard": {
       version: 1 as const,
       vendor: "test",
       validate: () => ({ value: param }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("url", mockFactory);
 
@@ -168,7 +167,7 @@ Deno.test("rule parser converts numeric string parameters to numbers", async () 
 
   let capturedParam: any;
 
-  const mockFactory = (param: any) => {
+  const mockFactory = ((param: any) => {
     capturedParam = param;
 
     return {
@@ -178,7 +177,7 @@ Deno.test("rule parser converts numeric string parameters to numbers", async () 
         validate: () => ({ value: null }),
       },
     };
-  };
+  }) as RuleFactory;
 
   parser.register("test", mockFactory);
   const validators = parser.parse("test:42");
@@ -194,7 +193,7 @@ Deno.test("rule parser keeps non-numeric string parameters as strings", async ()
 
   let capturedParam: any;
 
-  const mockFactory = (param: any) => {
+  const mockFactory = ((param: any) => {
     capturedParam = param;
 
     return {
@@ -204,7 +203,7 @@ Deno.test("rule parser keeps non-numeric string parameters as strings", async ()
         validate: () => ({ value: null }),
       },
     };
-  };
+  }) as RuleFactory;
 
   parser.register("test", mockFactory);
 
@@ -221,7 +220,7 @@ Deno.test("rule parser handles empty parameter value", () => {
 
   let capturedParams: any[];
 
-  const mockFactory = (...params: any[]) => {
+  const mockFactory = ((...params: any[]) => {
     capturedParams = params;
 
     return {
@@ -231,7 +230,7 @@ Deno.test("rule parser handles empty parameter value", () => {
         validate: () => ({ value: null }),
       },
     };
-  };
+  }) as RuleFactory;
 
   parser.register("test", mockFactory);
   parser.parse("test:");
@@ -244,7 +243,7 @@ Deno.test("rule parser trims parameter values", () => {
 
   let capturedParam: any;
 
-  const mockFactory = (param: any) => {
+  const mockFactory = ((param: any) => {
     capturedParam = param;
 
     return {
@@ -254,7 +253,7 @@ Deno.test("rule parser trims parameter values", () => {
         validate: () => ({ value: null }),
       },
     };
-  };
+  }) as RuleFactory;
 
   parser.register("test", mockFactory);
   parser.parse("test: value ");
@@ -267,7 +266,7 @@ Deno.test("rule parser trims multiple parameter values", () => {
 
   let capturedParams: any[];
 
-  const mockFactory = (...params: any[]) => {
+  const mockFactory = ((...params: any[]) => {
     capturedParams = params;
 
     return {
@@ -277,7 +276,7 @@ Deno.test("rule parser trims multiple parameter values", () => {
         validate: () => ({ value: null }),
       },
     };
-  };
+  }) as RuleFactory;
 
   parser.register("test", mockFactory);
   parser.parse("test: a , b , c ");
@@ -320,13 +319,13 @@ Deno.test("rule parser throws error for unknown rule in chain", () => {
 Deno.test("rule parser registers custom non-parameterized rule", () => {
   const parser = new RuleParser();
 
-  const customRule = () => ({
+  const customRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("custom", customRule);
 
@@ -339,13 +338,13 @@ Deno.test("rule parser registers custom non-parameterized rule", () => {
 Deno.test("rule parser registers custom parameterized rule", () => {
   const parser = new RuleParser();
 
-  const customFactory = (param: number) => ({
+  const customFactory = ((param: number) => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom",
       validate: () => ({ value: param }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("custom", customFactory);
 
@@ -357,13 +356,13 @@ Deno.test("rule parser registers custom parameterized rule", () => {
 Deno.test("rule parser allows overriding default rules", () => {
   const parser = new RuleParser();
 
-  const customRequired = () => ({
+  const customRequired = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom-required",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("required", customRequired);
 
@@ -375,13 +374,13 @@ Deno.test("rule parser allows overriding default rules", () => {
 Deno.test("rule parser can chain custom rules with default rules", () => {
   const parser = new RuleParser();
 
-  const customRule = () => ({
+  const customRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("custom", customRule);
 
@@ -423,13 +422,13 @@ Deno.test("rule parser.has() checks base name for parameterized rules", () => {
 Deno.test("rule parser.has() returns true for custom registered rule", () => {
   const parser = new RuleParser();
 
-  const customRule = () => ({
+  const customRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("custom", customRule);
 
@@ -439,13 +438,13 @@ Deno.test("rule parser.has() returns true for custom registered rule", () => {
 Deno.test("rule parser.has() returns true for custom parameterized rule", () => {
   const parser = new RuleParser();
 
-  const customFactory = (param: any) => ({
+  const customFactory = ((param: any) => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("custom", customFactory);
 
@@ -602,13 +601,13 @@ Deno.test("rule parser handles rule names with different casings", () => {
 Deno.test("rule parser handles numeric rule names if registered", () => {
   const parser = new RuleParser();
 
-  const numericRule = () => ({
+  const numericRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "test",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("123", numericRule);
 
@@ -619,13 +618,13 @@ Deno.test("rule parser handles numeric rule names if registered", () => {
 Deno.test("rule parser handles special characters in custom rule names", () => {
   const parser = new RuleParser();
 
-  const specialRule = () => ({
+  const specialRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "test",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser.register("my-rule", specialRule);
   parser.register("my_rule", specialRule);
@@ -638,13 +637,13 @@ Deno.test("rule parser instances are independent", () => {
   const parser1 = new RuleParser();
   const parser2 = new RuleParser();
 
-  const customRule = () => ({
+  const customRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom1",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   parser1.register("custom", customRule);
 
@@ -656,13 +655,13 @@ Deno.test("rule parser can be extended without affecting other instances", () =>
   const baseParser = new RuleParser();
   const extendedParser = new RuleParser();
 
-  const customRule = () => ({
+  const customRule = (() => ({
     "~standard": {
       version: 1 as const,
       vendor: "custom",
       validate: () => ({ value: null }),
     },
-  });
+  })) as RuleFactory;
 
   extendedParser.register("custom", customRule);
 

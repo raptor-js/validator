@@ -4,10 +4,10 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Creates a validator for an object with multiple fields.
- * Accepts any Standard Schema compliant validators (Zod, Valibot, Raptor pipe(), etc.)
  *
- * @param fields Object mapping field names to validators
- * @returns A Standard Schema validator for the entire object
+ * @param fields Object mapping field names to validators.
+ *
+ * @returns A standard schema validator for the entire object.
  */
 export function schema<T extends Record<string, StandardSchemaV1<any>>>(
   fields: T,

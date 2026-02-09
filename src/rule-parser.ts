@@ -6,7 +6,7 @@ import { string } from "./rules/string/rule.ts";
 import { required } from "./rules/required/rule.ts";
 import { numeric } from "./rules/numeric/rule.ts";
 
-type RuleFactory = (...args: unknown[]) => StandardSchemaV1<unknown>;
+export type RuleFactory = (...args: unknown[]) => StandardSchemaV1<unknown>;
 
 /**
  * Parses pipe-separated rule strings into standard schema validators.
