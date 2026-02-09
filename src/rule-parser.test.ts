@@ -130,17 +130,17 @@ Deno.test("rule parser parses multiple parameters", () => {
 
 Deno.test("RuleParser parses string parameter", () => {
   const parser = new RuleParser();
-  
+
   const mockFactory = ((param: string) => ({
     "~standard": {
       version: 1 as const,
       vendor: "test",
-      validate: () => ({ value: param })
-    }
+      validate: () => ({ value: param }),
+    },
   })) as RuleFactory;
-  
+
   parser.register("custom", mockFactory);
-  
+
   const validators = parser.parse("custom:value");
   assertEquals(validators.length, 1);
 });

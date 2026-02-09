@@ -1,5 +1,12 @@
-import { type Context, UnprocessableEntity } from "@raptor/framework";
+// deno-lint-ignore-file
+
 import type { StandardSchemaV1 } from "@standard-schema/spec";
+
+import {
+  type Context,
+  type Middleware,
+  UnprocessableEntity,
+} from "@raptor/framework";
 
 const kValidate = Symbol.for("raptor.request.validate");
 
@@ -10,12 +17,21 @@ const bodyCache = new WeakMap<Request, unknown>();
  */
 export default class Validator {
   /**
+   * Wrapper to pre-bind this to the validation handler method.
+   */
+  public get handle(): Middleware {
+    return (context: Context, next: CallableFunction) => {
+      return this.handleValidation(context, next);
+    };
+  }
+
+  /**
    * Handle the validation middleware.
    *
    * @param context The current HTTP context.
    * @param next The next middleware function.
    */
-  public handle(context: Context, next: CallableFunction) {
+  public handleValidation(context: Context, next: CallableFunction): unknown {
     const { request } = context;
 
     if (!(kValidate in request)) {
@@ -92,7 +108,9 @@ async function getRequestBody(request: Request): Promise<unknown> {
  *
  * @returns Formatted errors.
  */
-function formatErrors(issues: readonly StandardSchemaV1.Issue[]): Record<string, string[]> {
+function formatErrors(
+  issues: readonly StandardSchemaV1.Issue[],
+): Record<string, string[]> {
   const errors: Record<string, string[]> = {};
 
   for (const issue of issues) {
