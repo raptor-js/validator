@@ -8,14 +8,34 @@ import {
   UnprocessableEntity,
 } from "@raptor/framework";
 
-const kValidate = Symbol.for("raptor.request.validate");
+import BodyParser from "./body-parser.ts";
 
-const bodyCache = new WeakMap<Request, unknown>();
+const kValidate = Symbol.for("raptor.request.validate");
 
 /**
  * Validation middleware for Raptor.
  */
 export default class Validator {
+  private bodyParser: BodyParser;
+
+  /**
+   * Initialize the validation middleware.
+   *
+   * @param bodyParser Optional custom body parser instance.
+   */
+  constructor(bodyParser?: BodyParser) {
+    this.bodyParser = bodyParser ?? new BodyParser();
+  }
+
+  /**
+   * Get the body parser instance for customization.
+   *
+   * @returns The body parser instance.
+   */
+  public getBodyParser(): BodyParser {
+    return this.bodyParser;
+  }
+
   /**
    * Wrapper to pre-bind this to the validation handler method.
    */
@@ -47,9 +67,13 @@ export default class Validator {
    * @param request The HTTP request.
    */
   private attachValidateMethod(request: Request): void {
+    const bodyParser = this.bodyParser;
+
+    const formatErrors = this.formatErrors;
+
     Object.defineProperty(request, kValidate, {
       value: async function <T>(validator: StandardSchemaV1<T, any>) {
-        const body = await getRequestBody(this);
+        const body = await bodyParser.parse(this);
 
         const result = await validator["~standard"].validate(body);
 
@@ -70,55 +94,26 @@ export default class Validator {
       configurable: false,
     });
   }
-}
 
-/**
- * Get and cache the request body.
- *
- * @param request The HTTP request.
- *
- * @returns The parsed body.
- */
-async function getRequestBody(request: Request): Promise<unknown> {
-  let body = bodyCache.get(request);
+  /**
+   * Format standard schema issues into correct format.
+   *
+   * @param issues Validation issues.
+   *
+   * @returns Formatted errors.
+   */
+  private formatErrors(
+    issues: readonly StandardSchemaV1.Issue[],
+  ): Record<string, string[]> {
+    const errors: Record<string, string[]> = {};
 
-  if (body !== undefined) {
-    return body;
-  }
+    for (const issue of issues) {
+      const field = issue.path?.[0] as string ?? "unknown";
 
-  try {
-    body = await request.json();
-  } catch (e) {
-    if (e instanceof SyntaxError) {
-      body = {};
-    } else {
-      throw e;
+      errors[field] ??= [];
+      errors[field].push(issue.message);
     }
+
+    return errors;
   }
-
-  bodyCache.set(request, body);
-
-  return body;
-}
-
-/**
- * Format Standard Schema issues into Raptor error format.
- *
- * @param issues Validation issues.
- *
- * @returns Formatted errors.
- */
-function formatErrors(
-  issues: readonly StandardSchemaV1.Issue[],
-): Record<string, string[]> {
-  const errors: Record<string, string[]> = {};
-
-  for (const issue of issues) {
-    const field = issue.path?.[0] as string ?? "unknown";
-
-    errors[field] ??= [];
-    errors[field].push(issue.message);
-  }
-
-  return errors;
 }
