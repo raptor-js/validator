@@ -123,3 +123,5 @@ export default class RuleParser {
     this.register("max", max as RuleFactory);
   }
 }
+
+export const defaultRuleParser: RuleParser = new RuleParser();

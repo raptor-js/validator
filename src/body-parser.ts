@@ -46,7 +46,7 @@ export default class BodyParser {
 
   /**
    * Parse request body based on content type.
-   * 
+   *
    * @param request The request to parse by content-type.
    *
    * @return The parsed body from the request.
@@ -72,7 +72,7 @@ export default class BodyParser {
 
   /**
    * Parse JSON request body.
-   * 
+   *
    * @param request The request to parse.
    *
    * @returns The object parsed from the request.
@@ -95,7 +95,7 @@ export default class BodyParser {
 
   /**
    * Parse multipart form data.
-   * 
+   *
    * @param request The request to parse.
    *
    * @returns The object parsed from the request.
@@ -107,7 +107,7 @@ export default class BodyParser {
 
   /**
    * Convert form data to a plain object.
-   * 
+   *
    * @param formData The form data to transform.
    *
    * @returns The plain object transformed from the form data.
@@ -137,11 +137,13 @@ export default class BodyParser {
   ): void {
     if (!(key in obj)) {
       obj[key] = value;
+
       return;
     }
 
     if (Array.isArray(obj[key])) {
       (obj[key] as (string | File)[]).push(value);
+
       return;
     }
 

@@ -1,18 +1,21 @@
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 
-import RuleParser from "./rule-parser.ts";
+import type RuleParser from "./rule-parser.ts";
+import { defaultRuleParser } from "./rule-parser.ts";
 
 /**
  * Creates a validator from a pipe-separated rule string.
  *
- * @param ruleString A pipe-separated rule (e.g., "required|string|min:8")
+ * @param ruleString A pipe-separated rule (e.g., "required|string|min:8").
+ * @param ruleParser An optional rule parser instance.
  *
  * @returns A standard schema validator that runs all rules in sequence.
  */
-export function pipe<T = unknown>(ruleString: string): StandardSchemaV1<T> {
-  const parser = new RuleParser();
-
-  const validators = parser.parse(ruleString);
+export function pipe<T = unknown>(
+  ruleString: string,
+  ruleParser: RuleParser = defaultRuleParser,
+): StandardSchemaV1<T> {
+  const validators = ruleParser.parse(ruleString);
 
   return {
     "~standard": {

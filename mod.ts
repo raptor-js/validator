@@ -3,9 +3,11 @@
 import helper from "./src/helper.ts";
 import { pipe } from "./src/pipe.ts";
 import { schema } from "./src/schema.ts";
+import { defaultRuleParser } from "./src/rule-parser.ts";
 
 export { default as Validator } from "./src/validator.ts";
+export { default as RuleParser } from "./src/rule-parser.ts";
 
-export { pipe, schema };
+export { defaultRuleParser, pipe, schema };
 
 export default helper;
