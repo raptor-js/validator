@@ -8,11 +8,11 @@ import { required } from "./rules/required.ts";
 type RuleFactory = (...args: any[]) => StandardSchemaV1<any>;
 
 /**
- * Parses pipe-separated rule strings into Standard Schema validators.
+ * Parses pipe-separated rule strings into standard schema validators.
  */
 export default class RuleParser {
   /**
-   * Registry of all rule factories (both parameterized and non-parameterized).
+   * Registry of all rule factories.
    */
   private factories: Map<string, RuleFactory> = new Map();
 
@@ -26,22 +26,23 @@ export default class RuleParser {
   /**
    * Register a validation rule factory.
    *
-   * @param name The name of the rule (e.g., "required", "min")
-   * @param factory The factory function that creates the validator
+   * @param name The name of the rule (e.g., "required", "min").
+   * @param factory The factory function that creates the validator.
    */
   public register(name: string, factory: RuleFactory): void {
     this.factories.set(name, factory);
   }
 
   /**
-   * Parse a pipe-separated rule string into Standard Schema validators.
+   * Parse a pipe-separated rule string into standard schema validators.
    *
    * @param ruleString A pipe-separated string of rule names (e.g., "required|string|min:8").
    *
-   * @returns An array of Standard Schema validators.
+   * @returns An array of standard schema validators.
    */
   public parse(ruleString: string): StandardSchemaV1<any>[] {
     const ruleNames = ruleString.split("|").map((r) => r.trim());
+
     const validators: StandardSchemaV1<any>[] = [];
 
     for (const ruleName of ruleNames) {
@@ -58,7 +59,7 @@ export default class RuleParser {
    *
    * @param ruleString A rule string (e.g., "required" or "min:8").
    *
-   * @returns A Standard Schema validator
+   * @returns A standard schema validator.
    */
   private parseRule(ruleString: string): StandardSchemaV1<any> {
     if (ruleString.includes(":")) {
@@ -74,6 +75,7 @@ export default class RuleParser {
       
       const parsedParams = params.map(p => {
         const num = parseInt(p, 10);
+
         return isNaN(num) ? p : num;
       });
       
@@ -93,7 +95,8 @@ export default class RuleParser {
    * Check if a rule factory exists in the registry.
    *
    * @param ruleName The name of the rule to check.
-   * @returns True if the rule factory exists.
+   *
+   * @returns A boolean indicating whether the factory exists.
    */
   public has(ruleName: string): boolean {
     if (ruleName.includes(":")) {
