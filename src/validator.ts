@@ -9,6 +9,7 @@ import {
 } from "@raptor/framework";
 
 import BodyParser from "./body-parser.ts";
+import formatErrors from "./format-errors.ts";
 
 const kValidate = Symbol.for("raptor.request.validate");
 
@@ -69,8 +70,6 @@ export default class Validator {
   private attachValidateMethod(request: Request): void {
     const bodyParser = this.bodyParser;
 
-    const formatErrors = this.formatErrors;
-
     Object.defineProperty(request, kValidate, {
       value: async function <T>(validator: StandardSchemaV1<T, any>) {
         const body = await bodyParser.parse(this);
@@ -93,27 +92,5 @@ export default class Validator {
       },
       configurable: false,
     });
-  }
-
-  /**
-   * Format standard schema issues into correct format.
-   *
-   * @param issues Validation issues.
-   *
-   * @returns Formatted errors.
-   */
-  private formatErrors(
-    issues: readonly StandardSchemaV1.Issue[],
-  ): Record<string, string[]> {
-    const errors: Record<string, string[]> = {};
-
-    for (const issue of issues) {
-      const field = issue.path?.[0] as string ?? "unknown";
-
-      errors[field] ??= [];
-      errors[field].push(issue.message);
-    }
-
-    return errors;
   }
 }

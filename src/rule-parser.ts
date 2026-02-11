@@ -1,10 +1,28 @@
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 
+import { gt } from "./rules/gt/rule.ts";
+import { lt } from "./rules/lt/rule.ts";
 import { min } from "./rules/min/rule.ts";
 import { max } from "./rules/max/rule.ts";
+import { url } from "./rules/url/rule.ts";
+import { gte } from "./rules/gte/rule.ts";
+import { lte } from "./rules/lte/rule.ts";
+import { date } from "./rules/date/rule.ts";
+import { json } from "./rules/json/rule.ts";
+import { array } from "./rules/array/rule.ts";
+import { alpha } from "./rules/alpha/rule.ts";
+import { email } from "./rules/email/rule.ts";
 import { string } from "./rules/string/rule.ts";
-import { required } from "./rules/required/rule.ts";
 import { numeric } from "./rules/numeric/rule.ts";
+import { integer } from "./rules/integer/rule.ts";
+import { decimal } from "./rules/decimal/rule.ts";
+import { required } from "./rules/required/rule.ts";
+import { alphaNum } from "./rules/alpha-num/rule.ts";
+import { endsWith } from "./rules/ends-with/rule.ts";
+import { lowercase } from "./rules/lowercase/rule.ts";
+import { uppercase } from "./rules/uppercase/rule.ts";
+import { alphaDash } from "./rules/alpha-dash/rule.ts";
+import { startsWith } from "./rules/starts-with/rule.ts";
 
 export type RuleFactory = (...args: unknown[]) => StandardSchemaV1<unknown>;
 
@@ -116,11 +134,29 @@ export default class RuleParser {
    * Register the default validation rules.
    */
   private registerDefaultRules(): void {
-    this.register("required", required as RuleFactory);
-    this.register("string", string as RuleFactory);
-    this.register("numeric", numeric as RuleFactory);
+    this.register("gt", gt as RuleFactory);
+    this.register("lt", lt as RuleFactory);
+    this.register("url", url as RuleFactory);
     this.register("min", min as RuleFactory);
     this.register("max", max as RuleFactory);
+    this.register("gte", gte as RuleFactory);
+    this.register("lte", lte as RuleFactory);
+    this.register("date", date as RuleFactory);
+    this.register("json", json as RuleFactory);
+    this.register("array", array as RuleFactory);
+    this.register("alpha", alpha as RuleFactory);
+    this.register("email", email as RuleFactory);
+    this.register("string", string as RuleFactory);
+    this.register("numeric", numeric as RuleFactory);
+    this.register("integer", integer as RuleFactory);
+    this.register("decimal", decimal as RuleFactory);
+    this.register("required", required as RuleFactory);
+    this.register("alpha_num", alphaNum as RuleFactory);
+    this.register("ends_with", endsWith as RuleFactory);
+    this.register("lowercase", lowercase as RuleFactory);
+    this.register("uppercase", uppercase as RuleFactory);
+    this.register("alpha_dash", alphaDash as RuleFactory);
+    this.register("starts_with", startsWith as RuleFactory);
   }
 }
 
