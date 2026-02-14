@@ -54,9 +54,9 @@ export default class RuleParser {
   }
 
   /**
-   * Parse a pipe-separated rule string into standard schema validators.
+   * Parse a set of rules into standard schema validators.
    *
-   * @param rules A pipe-separated string of rule names (e.g., "required|string|min:8"), array of rule strings, or array of validators.
+   * @param rules A set of rules to validate against.
    *
    * @returns An array of standard schema validators.
    */
@@ -84,7 +84,7 @@ export default class RuleParser {
           continue;
         }
 
-        throw new ServerError("Array items must be rule strings or StandardSchemaV1 validators");
+        throw new ServerError("Array items must be rule strings or standard-schema validators");
       }
 
       return validators;

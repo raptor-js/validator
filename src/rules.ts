@@ -3,9 +3,9 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 import { ruleParser } from "./rule-parser.ts";
 
 /**
- * Creates a validator from a pipe-separated rule string or array of rule strings.
+ * Creates a validator from a set of rules.
  *
- * @param rules A pipe-separated rule (e.g., "required|string|min:8") or array of rule strings or validators.
+ * @param rules A set of rules to validate against.
  *
  * @returns A standard schema validator that runs all rules in sequence.
  */
