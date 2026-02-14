@@ -5,7 +5,7 @@ import { assertEquals, assertExists, assertThrows } from "@std/assert";
 
 import RuleParser, { type RuleFactory } from "./rule-parser.ts";
 
-Deno.test("rule parser parses single non-parameterized rule", () => {
+Deno.test("rule parser parses single non-parameterised rule", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required");
@@ -15,7 +15,7 @@ Deno.test("rule parser parses single non-parameterized rule", () => {
   assertEquals(validators[0]["~standard"].vendor, "raptor");
 });
 
-Deno.test("rule parser parses multiple non-parameterized rules", () => {
+Deno.test("rule parser parses multiple non-parameterised rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string");
@@ -23,7 +23,7 @@ Deno.test("rule parser parses multiple non-parameterized rules", () => {
   assertEquals(validators.length, 2);
 });
 
-Deno.test("rule parser parses single parameterized rule", () => {
+Deno.test("rule parser parses single parameterised rule", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("min:8");
@@ -32,7 +32,7 @@ Deno.test("rule parser parses single parameterized rule", () => {
   assertExists(validators[0]["~standard"]);
 });
 
-Deno.test("rule parser parses multiple parameterized rules", () => {
+Deno.test("rule parser parses multiple parameterised rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("min:8|max:100");
@@ -40,10 +40,23 @@ Deno.test("rule parser parses multiple parameterized rules", () => {
   assertEquals(validators.length, 2);
 });
 
-Deno.test("rule parser parses mixed parameterized and non-parameterized rules", () => {
+Deno.test("rule parser parses mixed parameterised and non-parameterised rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string|min:8|max:100");
+
+  assertEquals(validators.length, 4);
+});
+
+Deno.test("rule parser parses mixed array of parameterised and non-parameterised rules", () => {
+  const parser = new RuleParser();
+
+  const validators = parser.parse([
+    "required",
+    "string",
+    "min:8",
+    "max:100",
+  ]);
 
   assertEquals(validators.length, 4);
 });
@@ -286,7 +299,7 @@ Deno.test("rule parser trims multiple parameter values", () => {
   assertEquals(capturedParams![2], "c");
 });
 
-Deno.test("rule parser throws error for unknown non-parameterized rule", () => {
+Deno.test("rule parser throws error for unknown non-parameterised rule", () => {
   const parser = new RuleParser();
 
   assertThrows(
@@ -296,7 +309,7 @@ Deno.test("rule parser throws error for unknown non-parameterized rule", () => {
   );
 });
 
-Deno.test("rule parser throws error for unknown parameterized rule", () => {
+Deno.test("rule parser throws error for unknown parameterised rule", () => {
   const parser = new RuleParser();
 
   assertThrows(
@@ -316,7 +329,7 @@ Deno.test("rule parser throws error for unknown rule in chain", () => {
   );
 });
 
-Deno.test("rule parser registers custom non-parameterized rule", () => {
+Deno.test("rule parser registers custom non-parameterised rule", () => {
   const parser = new RuleParser();
 
   const customRule = (() => ({
@@ -335,7 +348,7 @@ Deno.test("rule parser registers custom non-parameterized rule", () => {
   assertEquals(validators[0]["~standard"].vendor, "custom");
 });
 
-Deno.test("rule parser registers custom parameterized rule", () => {
+Deno.test("rule parser registers custom parameterised rule", () => {
   const parser = new RuleParser();
 
   const customFactory = ((param: number) => ({
@@ -390,14 +403,14 @@ Deno.test("rule parser can chain custom rules with default rules", () => {
   assertEquals(validators[1]["~standard"].vendor, "custom");
 });
 
-Deno.test("rule parser.has() returns true for registered non-parameterized rule", () => {
+Deno.test("rule parser.has() returns true for registered non-parameterised rule", () => {
   const parser = new RuleParser();
 
   assertEquals(parser.has("required"), true);
   assertEquals(parser.has("string"), true);
 });
 
-Deno.test("rule parser.has() returns true for registered parameterized rule", () => {
+Deno.test("rule parser.has() returns true for registered parameterised rule", () => {
   const parser = new RuleParser();
 
   assertEquals(parser.has("min:8"), true);
@@ -411,7 +424,7 @@ Deno.test("rule parser.has() returns false for unknown rule", () => {
   assertEquals(parser.has("unknown:8"), false);
 });
 
-Deno.test("rule parser.has() checks base name for parameterized rules", () => {
+Deno.test("rule parser.has() checks base name for parameterised rules", () => {
   const parser = new RuleParser();
 
   assertEquals(parser.has("min:8"), true);
@@ -435,7 +448,7 @@ Deno.test("rule parser.has() returns true for custom registered rule", () => {
   assertEquals(parser.has("custom"), true);
 });
 
-Deno.test("rule parser.has() returns true for custom parameterized rule", () => {
+Deno.test("rule parser.has() returns true for custom parameterised rule", () => {
   const parser = new RuleParser();
 
   const customFactory = ((param: any) => ({
@@ -451,14 +464,14 @@ Deno.test("rule parser.has() returns true for custom parameterized rule", () => 
   assertEquals(parser.has("custom:value"), true);
 });
 
-Deno.test("rule parser registers default non-parameterized rules", () => {
+Deno.test("rule parser registers default non-parameterised rules", () => {
   const parser = new RuleParser();
 
   assertEquals(parser.has("required"), true);
   assertEquals(parser.has("string"), true);
 });
 
-Deno.test("rule parser registers default parameterized rules", () => {
+Deno.test("rule parser registers default parameterised rules", () => {
   const parser = new RuleParser();
 
   assertEquals(parser.has("min"), true);

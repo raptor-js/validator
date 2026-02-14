@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is a valid URL.
- * 
+ *
  * @returns A standard schema validator.
  */
 export function url(): StandardSchemaV1<string | null | undefined> {
@@ -19,8 +19,8 @@ export function url(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be a string",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -31,11 +31,11 @@ export function url(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be a valid URL",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
-      }
-    }
+      },
+    },
   };
 }

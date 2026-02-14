@@ -7,7 +7,9 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
  *
  * @returns Formatted errors.
  */
-export default (issues: readonly StandardSchemaV1.Issue[]): Record<string, string[]> => {
+export default (
+  issues: readonly StandardSchemaV1.Issue[],
+): Record<string, string[]> => {
   const errors: Record<string, string[]> = {};
 
   for (const issue of issues) {
@@ -18,4 +20,4 @@ export default (issues: readonly StandardSchemaV1.Issue[]): Record<string, strin
   }
 
   return errors;
-}
+};

@@ -12,7 +12,9 @@ Deno.test("date rule validates Date object successfully", async () => {
   const result = await dateSchema["~standard"].validate(testDate);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, testDate);
@@ -24,7 +26,9 @@ Deno.test("date rule validates ISO date string successfully", async () => {
   const result = await dateSchema["~standard"].validate("2025-01-15");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "2025-01-15");
@@ -38,7 +42,9 @@ Deno.test("date rule validates timestamp successfully", async () => {
   const result = await dateSchema["~standard"].validate(timestamp);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, timestamp);

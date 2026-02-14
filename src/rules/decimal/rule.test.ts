@@ -11,7 +11,9 @@ Deno.test("decimal rule validates floating-point number successfully", async () 
   const result = await decimalSchema["~standard"].validate(3.14);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 3.14);
@@ -23,7 +25,9 @@ Deno.test("decimal rule validates negative decimal successfully", async () => {
   const result = await decimalSchema["~standard"].validate(-2.5);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, -2.5);
@@ -39,7 +43,10 @@ Deno.test("decimal rule rejects integer", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a decimal (not an integer)");
+  assertEquals(
+    result.issues[0].message,
+    "The field must be a decimal (not an integer)",
+  );
 });
 
 Deno.test("decimal rule rejects string", async () => {

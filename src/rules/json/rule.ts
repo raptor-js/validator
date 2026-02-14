@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is valid JSON string.
- * 
+ *
  * @returns A standard schema validator.
  */
 export function json(): StandardSchemaV1<string | null | undefined> {
@@ -19,8 +19,8 @@ export function json(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be a string",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -32,11 +32,11 @@ export function json(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be valid JSON",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
-      }
-    }
+      },
+    },
   };
 }

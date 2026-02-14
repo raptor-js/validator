@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is a valid email address.
- * 
+ *
  * @returns A standard schema validator.
  */
 export function email(): StandardSchemaV1<string | null | undefined> {
@@ -19,8 +19,8 @@ export function email(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be a string",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -30,13 +30,13 @@ export function email(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be a valid email address",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

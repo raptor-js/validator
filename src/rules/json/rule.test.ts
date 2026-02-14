@@ -8,10 +8,14 @@ import { json } from "./rule.ts";
 Deno.test("json rule validates JSON object string successfully", async () => {
   const jsonSchema = json();
 
-  const result = await jsonSchema["~standard"].validate('{"name":"John","age":30}');
+  const result = await jsonSchema["~standard"].validate(
+    '{"name":"John","age":30}',
+  );
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, '{"name":"John","age":30}');
@@ -20,13 +24,15 @@ Deno.test("json rule validates JSON object string successfully", async () => {
 Deno.test("json rule validates JSON array string successfully", async () => {
   const jsonSchema = json();
 
-  const result = await jsonSchema["~standard"].validate('[1,2,3]');
+  const result = await jsonSchema["~standard"].validate("[1,2,3]");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
-  assertEquals(result.value, '[1,2,3]');
+  assertEquals(result.value, "[1,2,3]");
 });
 
 Deno.test("json rule validates JSON string value successfully", async () => {
@@ -35,7 +41,9 @@ Deno.test("json rule validates JSON string value successfully", async () => {
   const result = await jsonSchema["~standard"].validate('"hello"');
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, '"hello"');
@@ -44,13 +52,15 @@ Deno.test("json rule validates JSON string value successfully", async () => {
 Deno.test("json rule validates JSON number successfully", async () => {
   const jsonSchema = json();
 
-  const result = await jsonSchema["~standard"].validate('42');
+  const result = await jsonSchema["~standard"].validate("42");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
-  assertEquals(result.value, '42');
+  assertEquals(result.value, "42");
 });
 
 Deno.test("json rule rejects invalid JSON", async () => {

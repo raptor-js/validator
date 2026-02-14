@@ -60,7 +60,9 @@ export default class RuleParser {
    *
    * @returns An array of standard schema validators.
    */
-  public parse(rules: string | Array<string | StandardSchemaV1>): StandardSchemaV1<unknown>[] {
+  public parse(
+    rules: string | Array<string | StandardSchemaV1>,
+  ): StandardSchemaV1<unknown>[] {
     if (typeof rules === "string") {
       const ruleNames = rules
         .split("|")
@@ -84,7 +86,9 @@ export default class RuleParser {
           continue;
         }
 
-        throw new ServerError("Array items must be rule strings or standard-schema validators");
+        throw new ServerError(
+          "Array items must be rule strings or standard-schema validators",
+        );
       }
 
       return validators;
@@ -142,6 +146,7 @@ export default class RuleParser {
       typeof value === "object" &&
       value !== null &&
       "~standard" in value &&
+      // deno-lint-ignore no-explicit-any
       typeof (value as any)["~standard"] === "object"
     );
   }

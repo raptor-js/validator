@@ -11,7 +11,9 @@ Deno.test("gt rule validates number greater than threshold successfully", async 
   const result = await gtSchema["~standard"].validate(15);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 15);

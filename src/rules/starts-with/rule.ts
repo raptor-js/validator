@@ -2,12 +2,14 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field starts with one of the given values.
- * 
+ *
  * @param prefixes Allowed prefix values.
  *
  * @returns A standard schema validator.
  */
-export function startsWith(...prefixes: string[]): StandardSchemaV1<string | null | undefined> {
+export function startsWith(
+  ...prefixes: string[]
+): StandardSchemaV1<string | null | undefined> {
   return {
     "~standard": {
       version: 1,
@@ -21,12 +23,14 @@ export function startsWith(...prefixes: string[]): StandardSchemaV1<string | nul
           return {
             issues: [{
               message: "The field must be a string",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
-        const startsWithAny = prefixes.some(prefix => value.startsWith(prefix));
+        const startsWithAny = prefixes.some((prefix) =>
+          value.startsWith(prefix)
+        );
 
         if (!startsWithAny) {
           const prefixList = prefixes.join(", ");
@@ -34,13 +38,13 @@ export function startsWith(...prefixes: string[]): StandardSchemaV1<string | nul
           return {
             issues: [{
               message: `The field must start with one of: ${prefixList}`,
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

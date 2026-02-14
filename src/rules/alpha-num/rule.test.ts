@@ -11,7 +11,9 @@ Deno.test("alpha-num rule validates alphanumeric string successfully", async () 
   const result = await alphaNumSchema["~standard"].validate("hello123");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello123");
@@ -23,7 +25,9 @@ Deno.test("alpha-num rule validates only letters successfully", async () => {
   const result = await alphaNumSchema["~standard"].validate("hello");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello");
@@ -35,7 +39,9 @@ Deno.test("alpha-num rule validates only numbers successfully", async () => {
   const result = await alphaNumSchema["~standard"].validate("123");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "123");
@@ -51,7 +57,10 @@ Deno.test("alpha-num rule rejects string with spaces", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must contain only letters and numbers");
+  assertEquals(
+    result.issues[0].message,
+    "The field must contain only letters and numbers",
+  );
 });
 
 Deno.test("alpha-num rule rejects string with special characters", async () => {

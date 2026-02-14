@@ -11,7 +11,9 @@ Deno.test("lt rule validates number less than threshold successfully", async () 
   const result = await ltSchema["~standard"].validate(5);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 5);

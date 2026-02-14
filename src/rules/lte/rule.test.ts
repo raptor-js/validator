@@ -11,7 +11,9 @@ Deno.test("lte rule validates number less than threshold successfully", async ()
   const result = await lteSchema["~standard"].validate(5);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 5);
@@ -23,7 +25,9 @@ Deno.test("lte rule validates number equal to threshold successfully", async () 
   const result = await lteSchema["~standard"].validate(10);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 10);
@@ -39,7 +43,10 @@ Deno.test("lte rule rejects number greater than threshold", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be less than or equal to 10");
+  assertEquals(
+    result.issues[0].message,
+    "The field must be less than or equal to 10",
+  );
 });
 
 Deno.test("lte rule allows null/undefined to pass through", async () => {

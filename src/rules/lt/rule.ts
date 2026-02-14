@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is less than the given value.
- * 
+ *
  * @param threshold The value to compare against.
  *
  * @returns A standard schema validator.
@@ -21,13 +21,13 @@ export function lt(threshold: number): StandardSchemaV1<unknown> {
           return {
             issues: [{
               message: `The field must be less than ${threshold}`,
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is a decimal (floating-point number).
- * 
+ *
  * @returns A standard schema validator.
  */
 export function decimal(): StandardSchemaV1<number | null | undefined> {
@@ -19,8 +19,8 @@ export function decimal(): StandardSchemaV1<number | null | undefined> {
           return {
             issues: [{
               message: "The field must be a decimal",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -28,13 +28,13 @@ export function decimal(): StandardSchemaV1<number | null | undefined> {
           return {
             issues: [{
               message: "The field must be a decimal (not an integer)",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

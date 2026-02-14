@@ -2,10 +2,12 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is a valid date.
- * 
+ *
  * @returns A standard schema validator.
  */
-export function date(): StandardSchemaV1<Date | string | number | null | undefined> {
+export function date(): StandardSchemaV1<
+  Date | string | number | null | undefined
+> {
   return {
     "~standard": {
       version: 1,
@@ -20,8 +22,8 @@ export function date(): StandardSchemaV1<Date | string | number | null | undefin
             return {
               issues: [{
                 message: "The field must be a valid date",
-                path: []
-              }]
+                path: [],
+              }],
             };
           }
           return { value };
@@ -34,8 +36,8 @@ export function date(): StandardSchemaV1<Date | string | number | null | undefin
             return {
               issues: [{
                 message: "The field must be a valid date",
-                path: []
-              }]
+                path: [],
+              }],
             };
           }
           return { value };
@@ -48,8 +50,8 @@ export function date(): StandardSchemaV1<Date | string | number | null | undefin
             return {
               issues: [{
                 message: "The field must be a valid date",
-                path: []
-              }]
+                path: [],
+              }],
             };
           }
           return { value };
@@ -58,10 +60,10 @@ export function date(): StandardSchemaV1<Date | string | number | null | undefin
         return {
           issues: [{
             message: "The field must be a valid date",
-            path: []
-          }]
+            path: [],
+          }],
         };
-      }
-    }
+      },
+    },
   };
 }

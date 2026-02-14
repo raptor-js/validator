@@ -2,12 +2,14 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field ends with one of the given values.
- * 
+ *
  * @param suffixes Allowed suffix values.
  *
  * @returns A standard schema validator.
  */
-export function endsWith(...suffixes: string[]): StandardSchemaV1<string | null | undefined> {
+export function endsWith(
+  ...suffixes: string[]
+): StandardSchemaV1<string | null | undefined> {
   return {
     "~standard": {
       version: 1,
@@ -21,12 +23,12 @@ export function endsWith(...suffixes: string[]): StandardSchemaV1<string | null 
           return {
             issues: [{
               message: "The field must be a string",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
-        const endsWithAny = suffixes.some(suffix => value.endsWith(suffix));
+        const endsWithAny = suffixes.some((suffix) => value.endsWith(suffix));
 
         if (!endsWithAny) {
           const suffixList = suffixes.join(", ");
@@ -34,13 +36,13 @@ export function endsWith(...suffixes: string[]): StandardSchemaV1<string | null 
           return {
             issues: [{
               message: `The field must end with one of: ${suffixList}`,
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

@@ -11,7 +11,9 @@ Deno.test("integer rule validates whole number successfully", async () => {
   const result = await integerSchema["~standard"].validate(42);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 42);
@@ -23,7 +25,9 @@ Deno.test("integer rule validates negative whole number successfully", async () 
   const result = await integerSchema["~standard"].validate(-10);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, -10);
@@ -35,7 +39,9 @@ Deno.test("integer rule validates zero successfully", async () => {
   const result = await integerSchema["~standard"].validate(0);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 0);

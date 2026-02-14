@@ -2,7 +2,7 @@ import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 /**
  * Validates that a field is lowercase.
- * 
+ *
  * @returns A standard schema validator.
  */
 export function lowercase(): StandardSchemaV1<string | null | undefined> {
@@ -19,8 +19,8 @@ export function lowercase(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be a string",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
@@ -28,13 +28,13 @@ export function lowercase(): StandardSchemaV1<string | null | undefined> {
           return {
             issues: [{
               message: "The field must be lowercase",
-              path: []
-            }]
+              path: [],
+            }],
           };
         }
 
         return { value };
-      }
-    }
+      },
+    },
   };
 }

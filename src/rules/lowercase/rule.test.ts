@@ -11,7 +11,9 @@ Deno.test("lowercase rule validates lowercase string successfully", async () => 
   const result = await lowercaseSchema["~standard"].validate("hello");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello");
@@ -23,7 +25,9 @@ Deno.test("lowercase rule validates lowercase with numbers successfully", async 
   const result = await lowercaseSchema["~standard"].validate("hello123");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "hello123");
@@ -71,7 +75,9 @@ Deno.test("lowercase rule allows null/undefined to pass through", async () => {
   const lowercaseSchema = lowercase();
 
   const nullResult = await lowercaseSchema["~standard"].validate(null);
-  const undefinedResult = await lowercaseSchema["~standard"].validate(undefined);
+  const undefinedResult = await lowercaseSchema["~standard"].validate(
+    undefined,
+  );
 
   if ("issues" in nullResult || "issues" in undefinedResult) {
     throw new Error("Expected null/undefined to pass through");

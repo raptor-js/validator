@@ -11,7 +11,9 @@ Deno.test("array rule validates array successfully", async () => {
   const result = await arraySchema["~standard"].validate([1, 2, 3]);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, [1, 2, 3]);
@@ -23,7 +25,9 @@ Deno.test("array rule validates empty array successfully", async () => {
   const result = await arraySchema["~standard"].validate([]);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, []);
@@ -32,10 +36,17 @@ Deno.test("array rule validates empty array successfully", async () => {
 Deno.test("array rule validates array with mixed types successfully", async () => {
   const arraySchema = array();
 
-  const result = await arraySchema["~standard"].validate([1, "two", true, null]);
+  const result = await arraySchema["~standard"].validate([
+    1,
+    "two",
+    true,
+    null,
+  ]);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, [1, "two", true, null]);

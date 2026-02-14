@@ -11,7 +11,9 @@ Deno.test("ends-with rule validates string with single suffix successfully", asy
   const result = await endsWithSchema["~standard"].validate("example.com");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "example.com");
@@ -23,7 +25,9 @@ Deno.test("ends-with rule validates string with multiple suffixes successfully",
   const result = await endsWithSchema["~standard"].validate("example.org");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "example.org");
@@ -39,7 +43,10 @@ Deno.test("ends-with rule rejects string without matching suffix", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must end with one of: .com, .org");
+  assertEquals(
+    result.issues[0].message,
+    "The field must end with one of: .com, .org",
+  );
 });
 
 Deno.test("ends-with rule rejects non-string value", async () => {

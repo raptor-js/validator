@@ -11,7 +11,9 @@ Deno.test("gte rule validates number greater than threshold successfully", async
   const result = await gteSchema["~standard"].validate(15);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 15);
@@ -23,7 +25,9 @@ Deno.test("gte rule validates number equal to threshold successfully", async () 
   const result = await gteSchema["~standard"].validate(10);
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, 10);
@@ -39,7 +43,10 @@ Deno.test("gte rule rejects number less than threshold", async () => {
   }
 
   assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be greater than or equal to 10");
+  assertEquals(
+    result.issues[0].message,
+    "The field must be greater than or equal to 10",
+  );
 });
 
 Deno.test("gte rule allows null/undefined to pass through", async () => {

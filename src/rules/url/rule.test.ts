@@ -11,7 +11,9 @@ Deno.test("url rule validates HTTP URL successfully", async () => {
   const result = await urlSchema["~standard"].validate("http://example.com");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "http://example.com");
@@ -23,7 +25,9 @@ Deno.test("url rule validates HTTPS URL successfully", async () => {
   const result = await urlSchema["~standard"].validate("https://example.com");
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "https://example.com");
@@ -32,10 +36,14 @@ Deno.test("url rule validates HTTPS URL successfully", async () => {
 Deno.test("url rule validates URL with path successfully", async () => {
   const urlSchema = url();
 
-  const result = await urlSchema["~standard"].validate("https://example.com/path/to/page");
+  const result = await urlSchema["~standard"].validate(
+    "https://example.com/path/to/page",
+  );
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "https://example.com/path/to/page");
@@ -44,10 +52,14 @@ Deno.test("url rule validates URL with path successfully", async () => {
 Deno.test("url rule validates URL with query parameters successfully", async () => {
   const urlSchema = url();
 
-  const result = await urlSchema["~standard"].validate("https://example.com?foo=bar&baz=qux");
+  const result = await urlSchema["~standard"].validate(
+    "https://example.com?foo=bar&baz=qux",
+  );
 
   if ("issues" in result) {
-    throw new Error(`Expected success but got issues: ${JSON.stringify(result.issues)}`);
+    throw new Error(
+      `Expected success but got issues: ${JSON.stringify(result.issues)}`,
+    );
   }
 
   assertEquals(result.value, "https://example.com?foo=bar&baz=qux");
