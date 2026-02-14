@@ -1,8 +1,8 @@
 // Copyright 2026, @raptor-http. All rights reserved. MIT license.
 
-export { pipe } from "./src/pipe.ts";
+export { rules } from "./src/rules.ts";
 export { schema } from "./src/schema.ts";
-export { defaultRuleParser } from "./src/rule-parser.ts";
+export { ruleParser } from "./src/rule-parser.ts";
 
 export { default as Validator } from "./src/validator.ts";
 export { default as RuleParser } from "./src/rule-parser.ts";

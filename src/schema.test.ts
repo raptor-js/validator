@@ -3,13 +3,13 @@
 
 import { assertEquals, assertExists } from "@std/assert";
 
-import { pipe } from "./pipe.ts";
+import { rules } from "./rules.ts";
 import { schema } from "./schema.ts";
 
 Deno.test("schema validates multiple fields successfully", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
-    age: pipe<number>("required|numeric|min:18"),
+    name: rules<string>("required|string"),
+    age: rules<number>("required|numeric|min:18"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -29,8 +29,8 @@ Deno.test("schema validates multiple fields successfully", async () => {
 
 Deno.test("schema validates empty object when all fields are optional", async () => {
   const optionalSchema = schema({
-    name: pipe<string>("string"),
-    age: pipe<number>("numeric"),
+    name: rules<string>("string"),
+    age: rules<number>("numeric"),
   });
 
   const result = await optionalSchema["~standard"].validate({});
@@ -47,7 +47,7 @@ Deno.test("schema validates empty object when all fields are optional", async ()
 
 Deno.test("schema validates with extra fields in data", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
+    name: rules<string>("required|string"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -66,7 +66,7 @@ Deno.test("schema validates with extra fields in data", async () => {
 
 Deno.test("schema rejects non-object string input", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
+    name: rules<string>("required|string"),
   });
 
   const result = await userSchema["~standard"].validate("not an object");
@@ -83,7 +83,7 @@ Deno.test("schema rejects non-object string input", async () => {
 
 Deno.test("schema rejects null input", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
+    name: rules<string>("required|string"),
   });
 
   const result = await userSchema["~standard"].validate(null);
@@ -98,7 +98,7 @@ Deno.test("schema rejects null input", async () => {
 
 Deno.test("schema rejects array input", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
+    name: rules<string>("required|string"),
   });
 
   const result = await userSchema["~standard"].validate([1, 2, 3]);
@@ -113,7 +113,7 @@ Deno.test("schema rejects array input", async () => {
 
 Deno.test("schema rejects primitive number input", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
+    name: rules<string>("required|string"),
   });
 
   const result = await userSchema["~standard"].validate(42);
@@ -127,7 +127,7 @@ Deno.test("schema rejects primitive number input", async () => {
 
 Deno.test("schema rejects undefined input", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
+    name: rules<string>("required|string"),
   });
 
   const result = await userSchema["~standard"].validate(undefined);
@@ -141,8 +141,8 @@ Deno.test("schema rejects undefined input", async () => {
 
 Deno.test("schema collects single field validation error", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
-    age: pipe<number>("required|numeric|min:18"),
+    name: rules<string>("required|string"),
+    age: rules<number>("required|numeric|min:18"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -162,9 +162,9 @@ Deno.test("schema collects single field validation error", async () => {
 
 Deno.test("schema collects multiple field validation errors", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
-    email: pipe<string>("required|string"),
-    age: pipe<number>("required|numeric|min:18"),
+    name: rules<string>("required|string"),
+    email: rules<string>("required|string"),
+    age: rules<number>("required|numeric|min:18"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -187,7 +187,7 @@ Deno.test("schema collects multiple field validation errors", async () => {
 
 Deno.test("schema collects multiple errors from same field", async () => {
   const userSchema = schema({
-    password: pipe<string>("required|string|min:8"),
+    password: rules<string>("required|string|min:8"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -209,7 +209,7 @@ Deno.test("schema collects multiple errors from same field", async () => {
 
 Deno.test("schema includes field name in issue path", async () => {
   const userSchema = schema({
-    username: pipe<string>("required|string|min:3"),
+    username: rules<string>("required|string|min:3"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -258,9 +258,9 @@ Deno.test("schema preserves nested paths from validators", async () => {
 
 Deno.test("schema validates some fields while failing others", async () => {
   const userSchema = schema({
-    name: pipe<string>("required|string"),
-    age: pipe<number>("required|numeric|min:18"),
-    email: pipe<string>("string"),
+    name: rules<string>("required|string"),
+    age: rules<number>("required|numeric|min:18"),
+    email: rules<string>("string"),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -326,7 +326,7 @@ Deno.test("schema handles validators that return undefined path", async () => {
 
 Deno.test("schema catches type mismatch errors", async () => {
   const userSchema = schema({
-    age: pipe<number>("required|numeric"),
+    age: rules<number>("required|numeric"),
   });
 
   const result = await userSchema["~standard"].validate({

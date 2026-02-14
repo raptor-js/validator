@@ -1,3 +1,4 @@
+import { ServerError } from "@raptor/framework";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 
 import { gt } from "./rules/gt/rule.ts";
@@ -55,25 +56,41 @@ export default class RuleParser {
   /**
    * Parse a pipe-separated rule string into standard schema validators.
    *
-   * @param ruleString A pipe-separated string of rule names (e.g., "required|string|min:8").
+   * @param rules A pipe-separated string of rule names (e.g., "required|string|min:8"), array of rule strings, or array of validators.
    *
    * @returns An array of standard schema validators.
    */
-  public parse(ruleString: string): StandardSchemaV1<unknown>[] {
-    const ruleNames = ruleString
-      .split("|")
-      .map((r) => r.trim())
-      .filter((r) => r.length > 0);
+  public parse(rules: string | Array<string | StandardSchemaV1>): StandardSchemaV1<unknown>[] {
+    if (typeof rules === "string") {
+      const ruleNames = rules
+        .split("|")
+        .map((r) => r.trim())
+        .filter((r) => r.length > 0);
 
-    const validators: StandardSchemaV1<unknown>[] = [];
-
-    for (const ruleName of ruleNames) {
-      const validator = this.parseRule(ruleName);
-
-      validators.push(validator);
+      return ruleNames.map((ruleName) => this.parseRule(ruleName));
     }
 
-    return validators;
+    if (Array.isArray(rules)) {
+      const validators: StandardSchemaV1<unknown>[] = [];
+
+      for (const item of rules) {
+        if (typeof item === "string") {
+          validators.push(this.parseRule(item));
+          continue;
+        }
+
+        if (this.isStandardSchema(item)) {
+          validators.push(item);
+          continue;
+        }
+
+        throw new ServerError("Array items must be rule strings or StandardSchemaV1 validators");
+      }
+
+      return validators;
+    }
+
+    throw new ServerError("Rules must be a string or array");
   }
 
   /**
@@ -92,7 +109,7 @@ export default class RuleParser {
       const factory = this.factories.get(name);
 
       if (!factory) {
-        throw new Error(`Unknown validation rule: ${name}`);
+        throw new ServerError(`Unknown validation rule: ${name}`);
       }
 
       const parsedParams = params.map((p) => {
@@ -107,10 +124,26 @@ export default class RuleParser {
     const factory = this.factories.get(ruleString);
 
     if (!factory) {
-      throw new Error(`Unknown validation rule: ${ruleString}`);
+      throw new ServerError(`Unknown validation rule: ${ruleString}`);
     }
 
     return factory();
+  }
+
+  /**
+   * Check if a value is a StandardSchemaV1 validator.
+   *
+   * @param value The value to check.
+   *
+   * @returns True if the value is a StandardSchemaV1 validator.
+   */
+  private isStandardSchema(value: unknown): value is StandardSchemaV1<unknown> {
+    return (
+      typeof value === "object" &&
+      value !== null &&
+      "~standard" in value &&
+      typeof (value as any)["~standard"] === "object"
+    );
   }
 
   /**
@@ -160,4 +193,4 @@ export default class RuleParser {
   }
 }
 
-export const defaultRuleParser: RuleParser = new RuleParser();
+export const ruleParser: RuleParser = new RuleParser();
