@@ -4,7 +4,7 @@ import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
  * Create a validation schema for an object with multiple fields.
  *
  * @param definition An object where each key is a field name and value is a standard schema validator.
- * 
+ *
  * @returns A standard schema validator for the entire object.
  */
 export function schema<T extends Record<string, StandardSchemaV1>>(
@@ -14,7 +14,9 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
     "~standard": {
       version: 1,
       vendor: "raptor",
-      async validate(data): Promise<StandardSchemaV1.Result<InferSchemaOutput<T>>> {
+      async validate(
+        data,
+      ): Promise<StandardSchemaV1.Result<InferSchemaOutput<T>>> {
         if (typeof data !== "object" || data === null || Array.isArray(data)) {
           return {
             issues: [{
@@ -37,7 +39,10 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
             for (const issue of result.issues) {
               issues.push({
                 ...issue,
-                path: [field, ...(issue.path || [])],
+                path: [
+                  field,
+                  ...(issue.path || []),
+                ],
               });
             }
 
@@ -61,5 +66,7 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
  * Infer the output type from a schema definition.
  */
 type InferSchemaOutput<T extends Record<string, StandardSchemaV1>> = {
-  [K in keyof T]: T[K] extends StandardSchemaV1<any, infer Output> ? Output : never;
+  // deno-lint-ignore no-explicit-any
+  [K in keyof T]: T[K] extends StandardSchemaV1<any, infer Output> ? Output
+    : never;
 };
