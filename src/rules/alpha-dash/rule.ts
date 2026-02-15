@@ -1,4 +1,4 @@
-import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type { StandardSchemaV1 } from "../../types/standard-schema-v1.ts";
 
 /**
  * Validates that a field contains only letters, numbers, dashes, and underscores.

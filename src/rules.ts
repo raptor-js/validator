@@ -1,6 +1,6 @@
-import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
-import { ruleParser } from "./rule-parser.ts";
+import Validator from "./validator.ts";
 
 /**
  * Creates a validator from a set of rules.
@@ -12,7 +12,9 @@ import { ruleParser } from "./rule-parser.ts";
 export function rules<T = unknown>(
   rules: string | Array<string | StandardSchemaV1>,
 ): StandardSchemaV1<T> {
-  const validators = ruleParser.parse(rules);
+  const parser = Validator.getParser();
+
+  const validators = parser.parse(rules);
 
   return {
     "~standard": {

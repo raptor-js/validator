@@ -1,5 +1,5 @@
 import { ServerError } from "@raptor/framework";
-import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
 import { gt } from "./rules/gt/rule.ts";
 import { lt } from "./rules/lt/rule.ts";

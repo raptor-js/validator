@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 
-import type { StandardSchemaV1 } from "@standard-schema/spec";
+import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
 import {
   type Context,
@@ -8,15 +8,25 @@ import {
   UnprocessableEntity,
 } from "@raptor/framework";
 
+import RuleParser from "./rule-parser.ts";
 import BodyParser from "./body-parser.ts";
 import formatErrors from "./format-errors.ts";
 
 const kValidate = Symbol.for("raptor.request.validate");
+const kValidateSafe = Symbol.for("raptor.request.validateSafe");
 
 /**
  * Validation middleware for Raptor.
  */
 export default class Validator {
+  /**
+   * Global rule parser instance used by all validators.
+   */
+  private static parser: RuleParser = new RuleParser();
+
+  /**
+   * The request body parser.
+   */
   private bodyParser: BodyParser;
 
   /**
@@ -26,6 +36,25 @@ export default class Validator {
    */
   constructor(bodyParser?: BodyParser) {
     this.bodyParser = bodyParser ?? new BodyParser();
+  }
+
+  /**
+   * Set the global rule parser instance.
+   * This affects all subsequent validations using the rules() function.
+   *
+   * @param parser The rule parser instance to use globally.
+   */
+  public static setParser(parser: RuleParser): void {
+    Validator.parser = parser;
+  }
+
+  /**
+   * Get the global rule parser instance.
+   *
+   * @returns The global rule parser.
+   */
+  public static getParser(): RuleParser {
+    return Validator.parser;
   }
 
   /**
@@ -56,18 +85,18 @@ export default class Validator {
     const { request } = context;
 
     if (!(kValidate in request)) {
-      this.attachValidateMethod(request);
+      this.attachValidateMethods(request);
     }
 
     return next();
   }
 
   /**
-   * Attach the validate method to the request object.
+   * Attach the validate and validateSafe methods to the request object.
    *
    * @param request The HTTP request.
    */
-  private attachValidateMethod(request: Request): void {
+  private attachValidateMethods(request: Request): void {
     const bodyParser = this.bodyParser;
 
     Object.defineProperty(request, kValidate, {
@@ -86,9 +115,28 @@ export default class Validator {
       configurable: false,
     });
 
+    Object.defineProperty(request, kValidateSafe, {
+      value: async function <T>(
+        validator: StandardSchemaV1<T, any>,
+      ): Promise<StandardSchemaV1.Result<T>> {
+        const body = await bodyParser.parse(this);
+
+        return await validator["~standard"].validate(body);
+      },
+      writable: false,
+      configurable: false,
+    });
+
     Object.defineProperty(request, "validate", {
       get() {
         return (this as any)[kValidate];
+      },
+      configurable: false,
+    });
+
+    Object.defineProperty(request, "validateSafe", {
+      get() {
+        return (this as any)[kValidateSafe];
       },
       configurable: false,
     });
