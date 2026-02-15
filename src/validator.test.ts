@@ -28,7 +28,7 @@ Deno.test("test validator attaches validate method to request", async () => {
   assertEquals(methodExists, true);
 });
 
-Deno.test("test validator attaches validateSafe method to request", async () => {
+Deno.test("test validator attaches safe validation method to request", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -37,6 +37,7 @@ Deno.test("test validator attaches validateSafe method to request", async () => 
 
   app.use((context: Context) => {
     methodExists = typeof context.request.validateSafe === "function";
+
     return "OK";
   });
 
@@ -75,7 +76,7 @@ Deno.test("test validate returns data on successful validation", async () => {
   assertEquals(receivedData.age, 37);
 });
 
-Deno.test("test validateSafe returns success result on valid data", async () => {
+Deno.test("test safe validation returns success result on valid data", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -109,7 +110,7 @@ Deno.test("test validateSafe returns success result on valid data", async () => 
   assertEquals(result.value.email, "john.hammond@ingen.com");
 });
 
-Deno.test("test validate throws UnprocessableEntity on validation failure", async () => {
+Deno.test("test validate throws 422 on validation failure", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -163,7 +164,7 @@ Deno.test("test validate throws on missing required fields", async () => {
   assertEquals(response.status, 422);
 });
 
-Deno.test("test validateSafe returns failure result on invalid data", async () => {
+Deno.test("test safe validation returns failure result on invalid data", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -196,7 +197,7 @@ Deno.test("test validateSafe returns failure result on invalid data", async () =
   assertEquals(result.value, undefined);
 });
 
-Deno.test("test validateSafe does not throw on validation failure", async () => {
+Deno.test("test safe validation does not throw on validation failure", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -234,7 +235,7 @@ Deno.test("test validateSafe does not throw on validation failure", async () => 
   assertEquals(hasIssues, true);
 });
 
-Deno.test("test validateSafe handles missing required fields", async () => {
+Deno.test("test safe validation handles missing required fields", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -264,7 +265,7 @@ Deno.test("test validateSafe handles missing required fields", async () => {
   assertEquals(result.value, undefined);
 });
 
-Deno.test("test validateSafe handles empty request body", async () => {
+Deno.test("test safe validation handles empty request body", async () => {
   const app = new Kernel();
 
   app.use(validator);
@@ -332,7 +333,7 @@ Deno.test("test validate works with nested schemas", async () => {
   assertEquals(receivedData.account.age, 30);
 });
 
-Deno.test("test validateSafe works with nested schemas", async () => {
+Deno.test("test safe validation works with nested schemas", async () => {
   const app = new Kernel();
 
   app.use(validator);
