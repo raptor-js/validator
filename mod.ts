@@ -1,4 +1,4 @@
-// Copyright 2026, @raptor-http. All rights reserved. MIT license.
+// Copyright 2026, Raptor. All rights reserved. MIT license.
 
 export { rules } from "./src/rules.ts";
 export { schema } from "./src/schema.ts";
