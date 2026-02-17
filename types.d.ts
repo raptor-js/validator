@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+
 import type { StandardSchemaV1 } from "./src/types/standard-schema-v1.ts";
 
 declare global {
