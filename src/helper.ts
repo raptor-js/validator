@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+
 import type { Middleware } from "@raptor/framework";
 
 import Validator from "./validator.ts";
