@@ -1,9 +1,6 @@
 # Ignore example directory.
 examples
 
-# Ignore types file.
-types.d.ts
-
 # Coverage reports
 cov_profile
 coverage-report
