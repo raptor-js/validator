@@ -25,7 +25,7 @@
   },
   "lock": true,
   "imports": {
-    "@raptor/framework": "jsr:@raptor/framework@^0.16.1",
+    "@raptor/framework": "jsr:@raptor/framework@^0.17.1",
     "@std/assert": "jsr:@std/assert@^1.0.18"
   }
 }
