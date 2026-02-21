@@ -59,8 +59,8 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
               issues.push({
                 ...issue,
                 path: [
-                  field, 
-                  ...nestedPath
+                  field,
+                  ...nestedPath,
                 ],
               });
             }
