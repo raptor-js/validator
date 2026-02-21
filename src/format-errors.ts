@@ -13,7 +13,9 @@ export default (
   const errors: Record<string, string[]> = {};
 
   for (const issue of issues) {
-    const field = issue.path?.[0] as string ?? "unknown";
+    const field = issue.path && issue.path.length > 0
+      ? issue.path.join(".")
+      : "unknown";
 
     errors[field] ??= [];
     errors[field].push(issue.message);

@@ -1,6 +1,23 @@
 import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
 /**
+ * Normalise standard-schema issue segment.
+ *
+ * @param segment The error egment to normalise.
+ *
+ * @returns A normalised standard-schema issue segment.
+ */
+export function normaliseSegment(
+  segment: PropertyKey | StandardSchemaV1.PathSegment,
+): PropertyKey {
+  if (typeof segment === "object" && segment !== null && "key" in segment) {
+    return segment.key;
+  }
+
+  return segment as PropertyKey;
+}
+
+/**
  * Create a validation schema for an object with multiple fields.
  *
  * @param definition An object where each key is a field name and value is a standard schema validator.
@@ -37,11 +54,13 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
 
           if (result.issues) {
             for (const issue of result.issues) {
+              const nestedPath = (issue.path ?? []).map(normaliseSegment);
+
               issues.push({
                 ...issue,
                 path: [
-                  field,
-                  ...(issue.path || []),
+                  field, 
+                  ...nestedPath
                 ],
               });
             }
