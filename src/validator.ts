@@ -8,6 +8,7 @@ import {
   UnprocessableEntity,
 } from "@raptor/framework";
 
+import { Config } from "./config.ts";
 import RuleParser from "./rule-parser.ts";
 import BodyParser from "./body-parser.ts";
 import formatErrors from "./format-errors.ts";
@@ -25,17 +26,28 @@ export default class Validator {
   private static parser: RuleParser = new RuleParser();
 
   /**
-   * The request body parser.
+   * Optional configuration for the validator.
    */
-  private bodyParser: BodyParser;
+  private config: Config;
 
   /**
    * Initialize the validation middleware.
    *
-   * @param bodyParser Optional custom body parser instance.
+   * @param config Optional configuration for the validator.
    */
-  constructor(bodyParser?: BodyParser) {
-    this.bodyParser = bodyParser ?? new BodyParser();
+  constructor(config?: Config) {
+    this.config = {
+      ...this.initialiseDefaultConfig(),
+      ...config,
+    }
+
+    if (this.config.rules) {
+      const parser = Validator.getParser();
+
+      for (const [name, factory] of Object.entries(this.config.rules)) {
+        parser.register(name, factory);
+      }
+    }
   }
 
   /**
@@ -63,7 +75,7 @@ export default class Validator {
    * @returns The body parser instance.
    */
   public getBodyParser(): BodyParser {
-    return this.bodyParser;
+    return this.config.bodyParser!;
   }
 
   /**
@@ -97,7 +109,7 @@ export default class Validator {
    * @param request The HTTP request.
    */
   private attachValidateMethods(request: Request): void {
-    const bodyParser = this.bodyParser;
+    const bodyParser = this.config.bodyParser!;
 
     Object.defineProperty(request, kValidate, {
       value: async function <T>(validator: StandardSchemaV1<T, any>) {
@@ -140,5 +152,16 @@ export default class Validator {
       },
       configurable: false,
     });
+  }
+
+  /**
+   * Initialise the middleware config.
+   *
+   * @returns An initialise set of config.
+   */
+  private initialiseDefaultConfig(): Config {
+    return {
+      bodyParser: new BodyParser(),
+    };
   }
 }
