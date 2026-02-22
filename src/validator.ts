@@ -39,7 +39,7 @@ export default class Validator {
     this.config = {
       ...this.initialiseDefaultConfig(),
       ...config,
-    }
+    };
 
     if (this.config.rules) {
       const parser = Validator.getParser();

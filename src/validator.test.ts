@@ -14,7 +14,7 @@ const APP_URL = "http://localhost:8000";
 Deno.test("test validator attaches validate method to request", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let methodExists = false;
 
@@ -31,7 +31,7 @@ Deno.test("test validator attaches validate method to request", async () => {
 Deno.test("test validator attaches safe validation method to request", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let methodExists = false;
 
@@ -49,7 +49,7 @@ Deno.test("test validator attaches safe validation method to request", async () 
 Deno.test("test validate returns data on successful validation", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let receivedData: any = null;
 
@@ -79,7 +79,7 @@ Deno.test("test validate returns data on successful validation", async () => {
 Deno.test("test safe validation returns success result on valid data", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let result: any = null;
 
@@ -113,7 +113,7 @@ Deno.test("test safe validation returns success result on valid data", async () 
 Deno.test("test validate throws 422 on validation failure", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   app.use(async (context: Context) => {
     const userSchema = schema({
@@ -140,7 +140,7 @@ Deno.test("test validate throws 422 on validation failure", async () => {
 Deno.test("test validate throws on missing required fields", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   app.use(async (context: Context) => {
     const userSchema = schema({
@@ -167,7 +167,7 @@ Deno.test("test validate throws on missing required fields", async () => {
 Deno.test("test safe validation returns failure result on invalid data", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let result: any = null;
 
@@ -200,7 +200,7 @@ Deno.test("test safe validation returns failure result on invalid data", async (
 Deno.test("test safe validation does not throw on validation failure", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let threwError = false;
   let hasIssues = false;
@@ -238,7 +238,7 @@ Deno.test("test safe validation does not throw on validation failure", async () 
 Deno.test("test safe validation handles missing required fields", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let result: any = null;
 
@@ -268,7 +268,7 @@ Deno.test("test safe validation handles missing required fields", async () => {
 Deno.test("test safe validation handles empty request body", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let result: any = null;
 
@@ -296,7 +296,7 @@ Deno.test("test safe validation handles empty request body", async () => {
 Deno.test("test validate works with nested schemas", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let receivedData: any = null;
 
@@ -336,7 +336,7 @@ Deno.test("test validate works with nested schemas", async () => {
 Deno.test("test safe validation works with nested schemas", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let result: any = null;
 
@@ -378,7 +378,7 @@ Deno.test("test safe validation works with nested schemas", async () => {
 Deno.test("test validate handles optional fields", async () => {
   const app = new Kernel();
 
-  app.use(validator);
+  app.use(validator());
 
   let receivedData: any = null;
 
