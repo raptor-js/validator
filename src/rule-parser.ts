@@ -1,4 +1,4 @@
-import { ServerError } from "@raptor/framework";
+import { ServerError } from "@raptor/kernel";
 import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
 import { gt } from "./rules/gt/rule.ts";

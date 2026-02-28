@@ -6,7 +6,7 @@ import {
   type Context,
   type Middleware,
   UnprocessableEntity,
-} from "@raptor/framework";
+} from "@raptor/kernel";
 
 import { Config } from "./config.ts";
 import RuleParser from "./rule-parser.ts";
