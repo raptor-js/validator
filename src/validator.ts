@@ -113,7 +113,9 @@ export default class Validator {
 
     Object.defineProperty(request, kValidate, {
       value: async function <T>(validator: StandardSchemaV1<T, any>) {
-        const body = await bodyParser.parse(this);
+        const clone = this.clone();
+
+        const body = await bodyParser.parse(clone);
 
         const result = await validator["~standard"].validate(body);
 
@@ -131,7 +133,9 @@ export default class Validator {
       value: async function <T>(
         validator: StandardSchemaV1<T, any>,
       ): Promise<StandardSchemaV1.Result<T>> {
-        const body = await bodyParser.parse(this);
+        const clone = this.clone();
+
+        const body = await bodyParser.parse(clone);
 
         return await validator["~standard"].validate(body);
       },
