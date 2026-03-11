@@ -2,6 +2,7 @@
 
 export { rules } from "./src/rules.ts";
 export { schema } from "./src/schema.ts";
+export { optional } from "./src/optional.ts";
 export { ruleParser } from "./src/rule-parser.ts";
 
 export { default as Validator } from "./src/validator.ts";
