@@ -3,7 +3,8 @@
 
 import { assertEquals, assertExists } from "@std/assert";
 
-import { Context, Kernel } from "@raptor/kernel";
+import { Kernel } from "@raptor/kernel";
+import { Context } from "@raptor/types";
 
 import { rules } from "./rules.ts";
 import validator from "./helper.ts";

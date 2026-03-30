@@ -2,11 +2,8 @@
 
 import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
-import {
-  type Context,
-  type Middleware,
-  UnprocessableEntity,
-} from "@raptor/kernel";
+import { UnprocessableEntity } from "@raptor/kernel";
+import type { Context, Middleware } from "@raptor/types";
 
 import { Config } from "./config.ts";
 import RuleParser from "./rule-parser.ts";
