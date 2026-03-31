@@ -1,5 +1,7 @@
 // Copyright 2026, Raptor. All rights reserved. MIT license.
 
+/// <reference types="./types.d.ts" />
+
 export { rules } from "./src/rules.ts";
 export { schema } from "./src/schema.ts";
 export { optional } from "./src/optional.ts";
