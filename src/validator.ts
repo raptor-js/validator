@@ -13,6 +13,51 @@ import formatErrors from "./format-errors.ts";
 const kValidate = Symbol.for("raptor.request.validate");
 const kValidateSafe = Symbol.for("raptor.request.validateSafe");
 
+// Attach the validate getters to request prototype on module load.
+if (!(kValidate in Request.prototype)) {
+  Object.defineProperty(Request.prototype, kValidate, {
+    value: null,
+    writable: true,
+    configurable: true,
+  });
+
+  Object.defineProperty(Request.prototype, kValidateSafe, {
+    value: null,
+    writable: true,
+    configurable: true,
+  });
+
+  Object.defineProperty(Request.prototype, "validate", {
+    get() {
+      const fn = (this as any)[kValidate];
+
+      if (!fn) {
+        throw new Error(
+          "validate() is not available. Ensure the Raptor validator middleware has been registered.",
+        );
+      }
+
+      return fn;
+    },
+    configurable: false,
+  });
+
+  Object.defineProperty(Request.prototype, "validateSafe", {
+    get() {
+      const fn = (this as any)[kValidateSafe];
+
+      if (!fn) {
+        throw new Error(
+          "validateSafe() is not available. Ensure the Raptor validator middleware has been registered.",
+        );
+      }
+
+      return fn;
+    },
+    configurable: false,
+  });
+}
+
 /**
  * Validation middleware for Raptor.
  */
@@ -93,7 +138,7 @@ export default class Validator {
   public handleValidation(context: Context, next: CallableFunction): unknown {
     const { request } = context;
 
-    if (!(kValidate in request)) {
+    if (!(request as any)[kValidate]) {
       this.attachValidateMethods(request);
     }
 
@@ -101,9 +146,11 @@ export default class Validator {
   }
 
   /**
-   * Attach the validate and validateSafe methods to the request object.
+   * Attach the validation method implementations to the request instance.
    *
    * @param request The HTTP request.
+   *
+   * @returns void
    */
   private attachValidateMethods(request: Request): void {
     const bodyParser = this.config.bodyParser!;
@@ -137,20 +184,6 @@ export default class Validator {
         return await validator["~standard"].validate(body);
       },
       writable: false,
-      configurable: false,
-    });
-
-    Object.defineProperty(request, "validate", {
-      get() {
-        return (this as any)[kValidate];
-      },
-      configurable: false,
-    });
-
-    Object.defineProperty(request, "validateSafe", {
-      get() {
-        return (this as any)[kValidateSafe];
-      },
       configurable: false,
     });
   }
