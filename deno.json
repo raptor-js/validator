@@ -1,6 +1,6 @@
 {
   "name": "@raptor/validator",
-  "version": "0.15.1",
+  "version": "0.15.0",
   "exports": "./mod.ts",
   "compilerOptions": {
     "lib": [
