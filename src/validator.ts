@@ -1,11 +1,11 @@
-// deno-lint-ignore-file
+// deno-lint-ignore-file no-explicit-any
 
 import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
 import { UnprocessableEntity } from "@raptor/kernel";
 import type { Context, Middleware } from "@raptor/types";
 
-import { Config } from "./config.ts";
+import type { Config } from "./config.ts";
 import RuleParser from "./rule-parser.ts";
 import BodyParser from "./body-parser.ts";
 import formatErrors from "./format-errors.ts";
