@@ -14,6 +14,7 @@ import { array } from "./rules/array/rule.ts";
 import { alpha } from "./rules/alpha/rule.ts";
 import { email } from "./rules/email/rule.ts";
 import { string } from "./rules/string/rule.ts";
+import { boolean } from "./rules/boolean/rule.ts";
 import { numeric } from "./rules/numeric/rule.ts";
 import { integer } from "./rules/integer/rule.ts";
 import { decimal } from "./rules/decimal/rule.ts";
@@ -185,6 +186,7 @@ export default class RuleParser {
     this.register("alpha", alpha as RuleFactory);
     this.register("email", email as RuleFactory);
     this.register("string", string as RuleFactory);
+    this.register("boolean", boolean as RuleFactory);
     this.register("numeric", numeric as RuleFactory);
     this.register("integer", integer as RuleFactory);
     this.register("decimal", decimal as RuleFactory);

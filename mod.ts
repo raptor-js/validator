@@ -25,6 +25,7 @@ export { alpha } from "./src/rules/alpha/rule.ts";
 export { array } from "./src/rules/array/rule.ts";
 export { email } from "./src/rules/email/rule.ts";
 export { string } from "./src/rules/string/rule.ts";
+export { boolean } from "./src/rules/boolean/rule.ts";
 export { numeric } from "./src/rules/numeric/rule.ts";
 export { decimal } from "./src/rules/decimal/rule.ts";
 export { integer } from "./src/rules/integer/rule.ts";
