@@ -7,9 +7,7 @@ import type { StandardSchemaV1 } from "../../types/standard-schema-v1.ts";
  *
  * @returns A standard schema validator.
  */
-export function max(
-  maximum: number,
-): StandardSchemaV1<unknown> {
+export function max(maximum: number): StandardSchemaV1<unknown> {
   return {
     "~standard": {
       version: 1,
@@ -21,28 +19,34 @@ export function max(
 
         if (typeof value === "string" && value.length > maximum) {
           return {
-            issues: [{
-              message: `The field must be no more than ${maximum} in length`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be no more than ${maximum} in length`,
+                path: [],
+              },
+            ],
           };
         }
 
         if (typeof value === "number" && value > maximum) {
           return {
-            issues: [{
-              message: `The field must be no more than ${maximum}`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be no more than ${maximum}`,
+                path: [],
+              },
+            ],
           };
         }
 
         if (Array.isArray(value) && value.length > maximum) {
           return {
-            issues: [{
-              message: `The field must be no more than ${maximum} in length`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be no more than ${maximum} in length`,
+                path: [],
+              },
+            ],
           };
         }
 

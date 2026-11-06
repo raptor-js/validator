@@ -17,10 +17,12 @@ export function email(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
@@ -28,10 +30,12 @@ export function email(): StandardSchemaV1<string | null | undefined> {
 
         if (!emailRegex.test(value)) {
           return {
-            issues: [{
-              message: "The field must be a valid email address",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a valid email address",
+                path: [],
+              },
+            ],
           };
         }
 

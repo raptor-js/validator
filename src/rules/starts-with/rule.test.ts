@@ -1,16 +1,13 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { startsWith } from "./rule.ts";
 
-Deno.test("starts-with rule validates string with single prefix successfully", async () => {
+test("starts-with rule validates string with single prefix successfully", async () => {
   const startsWithSchema = startsWith("http");
 
-  const result = await startsWithSchema["~standard"].validate(
-    "http://example.com",
-  );
+  const result =
+    await startsWithSchema["~standard"].validate("http://example.com");
 
   if ("issues" in result) {
     throw new Error(
@@ -18,10 +15,10 @@ Deno.test("starts-with rule validates string with single prefix successfully", a
     );
   }
 
-  assertEquals(result.value, "http://example.com");
+  assert.deepStrictEqual(result.value, "http://example.com");
 });
 
-Deno.test("starts-with rule validates string with multiple prefixes successfully", async () => {
+test("starts-with rule validates string with multiple prefixes successfully", async () => {
   const startsWithSchema = startsWith("http", "https");
 
   const result = await startsWithSchema["~standard"].validate(
@@ -34,28 +31,27 @@ Deno.test("starts-with rule validates string with multiple prefixes successfully
     );
   }
 
-  assertEquals(result.value, "https://example.com");
+  assert.deepStrictEqual(result.value, "https://example.com");
 });
 
-Deno.test("starts-with rule rejects string without matching prefix", async () => {
+test("starts-with rule rejects string without matching prefix", async () => {
   const startsWithSchema = startsWith("http", "https");
 
-  const result = await startsWithSchema["~standard"].validate(
-    "ftp://example.com",
-  );
+  const result =
+    await startsWithSchema["~standard"].validate("ftp://example.com");
 
   if ("value" in result) {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
     result.issues[0].message,
     "The field must start with one of: http, https",
   );
 });
 
-Deno.test("starts-with rule rejects non-string value", async () => {
+test("starts-with rule rejects non-string value", async () => {
   const startsWithSchema = startsWith("test");
 
   const result = await startsWithSchema["~standard"].validate(123);
@@ -64,22 +60,24 @@ Deno.test("starts-with rule rejects non-string value", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a string");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a string",
+  );
 });
 
-Deno.test("starts-with rule allows null/undefined to pass through", async () => {
+test("starts-with rule allows null/undefined to pass through", async () => {
   const startsWithSchema = startsWith("test");
 
   const nullResult = await startsWithSchema["~standard"].validate(null);
-  const undefinedResult = await startsWithSchema["~standard"].validate(
-    undefined,
-  );
+  const undefinedResult =
+    await startsWithSchema["~standard"].validate(undefined);
 
   if ("issues" in nullResult || "issues" in undefinedResult) {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

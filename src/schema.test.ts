@@ -1,12 +1,10 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { rules } from "./rules.ts";
 import { schema } from "./schema.ts";
 
-Deno.test("schema validates multiple fields successfully", async () => {
+test("schema validates multiple fields successfully", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
     age: rules<number>("required|numeric|min:18"),
@@ -23,11 +21,11 @@ Deno.test("schema validates multiple fields successfully", async () => {
     );
   }
 
-  assertEquals(result.value.name, "Dr Malcolm");
-  assertEquals(result.value.age, 42);
+  assert.deepStrictEqual(result.value.name, "Dr Malcolm");
+  assert.deepStrictEqual(result.value.age, 42);
 });
 
-Deno.test("schema validates empty object when all fields are optional", async () => {
+test("schema validates empty object when all fields are optional", async () => {
   const optionalSchema = schema({
     name: rules<string>("string"),
     age: rules<number>("numeric"),
@@ -41,11 +39,11 @@ Deno.test("schema validates empty object when all fields are optional", async ()
     );
   }
 
-  assertEquals(result.value.name, undefined);
-  assertEquals(result.value.age, undefined);
+  assert.deepStrictEqual(result.value.name, undefined);
+  assert.deepStrictEqual(result.value.age, undefined);
 });
 
-Deno.test("schema validates with extra fields in data", async () => {
+test("schema validates with extra fields in data", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
   });
@@ -61,10 +59,10 @@ Deno.test("schema validates with extra fields in data", async () => {
     );
   }
 
-  assertEquals(result.value.name, "Dr Malcolm");
+  assert.deepStrictEqual(result.value.name, "Dr Malcolm");
 });
 
-Deno.test("schema rejects non-object string input", async () => {
+test("schema rejects non-object string input", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
   });
@@ -75,13 +73,13 @@ Deno.test("schema rejects non-object string input", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues.length, 1);
-  assertEquals(result.issues[0].message, "Expected an object");
-  assertEquals(result.issues[0].path, []);
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues.length, 1);
+  assert.deepStrictEqual(result.issues[0].message, "Expected an object");
+  assert.deepStrictEqual(result.issues[0].path, []);
 });
 
-Deno.test("schema rejects null input", async () => {
+test("schema rejects null input", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
   });
@@ -92,11 +90,11 @@ Deno.test("schema rejects null input", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].message, "Expected an object");
-  assertEquals(result.issues[0].path, []);
+  assert.deepStrictEqual(result.issues[0].message, "Expected an object");
+  assert.deepStrictEqual(result.issues[0].path, []);
 });
 
-Deno.test("schema rejects array input", async () => {
+test("schema rejects array input", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
   });
@@ -107,11 +105,11 @@ Deno.test("schema rejects array input", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].message, "Expected an object");
-  assertEquals(result.issues[0].path, []);
+  assert.deepStrictEqual(result.issues[0].message, "Expected an object");
+  assert.deepStrictEqual(result.issues[0].path, []);
 });
 
-Deno.test("schema rejects primitive number input", async () => {
+test("schema rejects primitive number input", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
   });
@@ -122,10 +120,10 @@ Deno.test("schema rejects primitive number input", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].message, "Expected an object");
+  assert.deepStrictEqual(result.issues[0].message, "Expected an object");
 });
 
-Deno.test("schema rejects undefined input", async () => {
+test("schema rejects undefined input", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
   });
@@ -136,10 +134,10 @@ Deno.test("schema rejects undefined input", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].message, "Expected an object");
+  assert.deepStrictEqual(result.issues[0].message, "Expected an object");
 });
 
-Deno.test("schema collects single field validation error", async () => {
+test("schema collects single field validation error", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
     age: rules<number>("required|numeric|min:18"),
@@ -154,13 +152,13 @@ Deno.test("schema collects single field validation error", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues.length, 1);
-  assertEquals(result.issues[0].path, ["age"]);
-  assertEquals(result.issues[0].message, "The field is required");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues.length, 1);
+  assert.deepStrictEqual(result.issues[0].path, ["age"]);
+  assert.deepStrictEqual(result.issues[0].message, "The field is required");
 });
 
-Deno.test("schema collects multiple field validation errors", async () => {
+test("schema collects multiple field validation errors", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
     email: rules<string>("required|string"),
@@ -175,17 +173,17 @@ Deno.test("schema collects multiple field validation errors", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues.length, 3);
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues.length, 3);
 
   const paths = result.issues.map((i) => i.path?.[0]);
 
-  assertEquals(paths.includes("name"), true);
-  assertEquals(paths.includes("email"), true);
-  assertEquals(paths.includes("age"), true);
+  assert.deepStrictEqual(paths.includes("name"), true);
+  assert.deepStrictEqual(paths.includes("email"), true);
+  assert.deepStrictEqual(paths.includes("age"), true);
 });
 
-Deno.test("schema collects multiple errors from same field", async () => {
+test("schema collects multiple errors from same field", async () => {
   const userSchema = schema({
     password: rules<string>("required|string|min:8"),
   });
@@ -198,16 +196,16 @@ Deno.test("schema collects multiple errors from same field", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues.length, 1);
-  assertEquals(result.issues[0].path, ["password"]);
-  assertEquals(
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues.length, 1);
+  assert.deepStrictEqual(result.issues[0].path, ["password"]);
+  assert.deepStrictEqual(
     result.issues[0].message,
     "The field must be at least 8 in length",
   );
 });
 
-Deno.test("schema includes field name in issue path", async () => {
+test("schema includes field name in issue path", async () => {
   const userSchema = schema({
     username: rules<string>("required|string|min:3"),
   });
@@ -220,10 +218,10 @@ Deno.test("schema includes field name in issue path", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].path, ["username"]);
+  assert.deepStrictEqual(result.issues[0].path, ["username"]);
 });
 
-Deno.test("schema preserves nested paths from validators", async () => {
+test("schema preserves nested paths from validators", async () => {
   // This tests that if a validator returns a path like ["nested", "field"],
   // schema prepends the field name to get ["fieldName", "nested", "field"]
 
@@ -233,10 +231,12 @@ Deno.test("schema preserves nested paths from validators", async () => {
       version: 1,
       vendor: "test",
       validate: () => ({
-        issues: [{
-          message: "Nested error",
-          path: ["nested", "field"],
-        }],
+        issues: [
+          {
+            message: "Nested error",
+            path: ["nested", "field"],
+          },
+        ],
       }),
     },
   };
@@ -253,10 +253,10 @@ Deno.test("schema preserves nested paths from validators", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].path, ["data", "nested", "field"]);
+  assert.deepStrictEqual(result.issues[0].path, ["data", "nested", "field"]);
 });
 
-Deno.test("schema validates some fields while failing others", async () => {
+test("schema validates some fields while failing others", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
     age: rules<number>("required|numeric|min:18"),
@@ -274,11 +274,11 @@ Deno.test("schema validates some fields while failing others", async () => {
   }
 
   // Should only have error for age
-  assertEquals(result.issues.length, 1);
-  assertEquals(result.issues[0].path, ["age"]);
+  assert.deepStrictEqual(result.issues.length, 1);
+  assert.deepStrictEqual(result.issues[0].path, ["age"]);
 });
 
-Deno.test("schema handles empty schema definition", async () => {
+test("schema handles empty schema definition", async () => {
   const emptySchema = schema({});
 
   const result = await emptySchema["~standard"].validate({
@@ -292,19 +292,21 @@ Deno.test("schema handles empty schema definition", async () => {
   }
 
   // Should succeed with empty object
-  assertEquals(Object.keys(result.value).length, 0);
+  assert.deepStrictEqual(Object.keys(result.value).length, 0);
 });
 
-Deno.test("schema handles validators that return undefined path", async () => {
+test("schema handles validators that return undefined path", async () => {
   const mockValidator: any = {
     "~standard": {
       version: 1,
       vendor: "test",
       validate: () => ({
-        issues: [{
-          message: "Error without path",
-          // path is undefined
-        }],
+        issues: [
+          {
+            message: "Error without path",
+            // path is undefined
+          },
+        ],
       }),
     },
   };
@@ -321,10 +323,10 @@ Deno.test("schema handles validators that return undefined path", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertEquals(result.issues[0].path, ["field"]);
+  assert.deepStrictEqual(result.issues[0].path, ["field"]);
 });
 
-Deno.test("schema catches type mismatch errors", async () => {
+test("schema catches type mismatch errors", async () => {
   const userSchema = schema({
     age: rules<number>("required|numeric"),
   });
@@ -337,6 +339,6 @@ Deno.test("schema catches type mismatch errors", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].path, ["age"]);
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues[0].path, ["age"]);
 });

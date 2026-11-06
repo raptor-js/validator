@@ -17,19 +17,23 @@ export function decimal(): StandardSchemaV1<number | null | undefined> {
 
         if (typeof value !== "number" || isNaN(value)) {
           return {
-            issues: [{
-              message: "The field must be a decimal",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a decimal",
+                path: [],
+              },
+            ],
           };
         }
 
         if (Number.isInteger(value)) {
           return {
-            issues: [{
-              message: "The field must be a decimal (not an integer)",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a decimal (not an integer)",
+                path: [],
+              },
+            ],
           };
         }
 

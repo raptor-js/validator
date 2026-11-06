@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { alpha } from "./rule.ts";
 
-Deno.test("alpha rule validates alphabetic string successfully", async () => {
+test("alpha rule validates alphabetic string successfully", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("hello");
@@ -16,10 +14,10 @@ Deno.test("alpha rule validates alphabetic string successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "hello");
+  assert.deepStrictEqual(result.value, "hello");
 });
 
-Deno.test("alpha rule validates uppercase letters successfully", async () => {
+test("alpha rule validates uppercase letters successfully", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("HELLO");
@@ -30,10 +28,10 @@ Deno.test("alpha rule validates uppercase letters successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "HELLO");
+  assert.deepStrictEqual(result.value, "HELLO");
 });
 
-Deno.test("alpha rule validates mixed case successfully", async () => {
+test("alpha rule validates mixed case successfully", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("HeLLo");
@@ -44,10 +42,10 @@ Deno.test("alpha rule validates mixed case successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "HeLLo");
+  assert.deepStrictEqual(result.value, "HeLLo");
 });
 
-Deno.test("alpha rule rejects string with numbers", async () => {
+test("alpha rule rejects string with numbers", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("hello123");
@@ -56,14 +54,14 @@ Deno.test("alpha rule rejects string with numbers", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
     result.issues[0].message,
     "The field must contain only alphabetic characters",
   );
 });
 
-Deno.test("alpha rule rejects string with spaces", async () => {
+test("alpha rule rejects string with spaces", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("hello world");
@@ -72,10 +70,10 @@ Deno.test("alpha rule rejects string with spaces", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("alpha rule rejects string with special characters", async () => {
+test("alpha rule rejects string with special characters", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("hello!");
@@ -84,10 +82,10 @@ Deno.test("alpha rule rejects string with special characters", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("alpha rule rejects empty string", async () => {
+test("alpha rule rejects empty string", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate("");
@@ -96,10 +94,10 @@ Deno.test("alpha rule rejects empty string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("alpha rule rejects number", async () => {
+test("alpha rule rejects number", async () => {
   const alphaSchema = alpha();
 
   const result = await alphaSchema["~standard"].validate(123);
@@ -108,11 +106,14 @@ Deno.test("alpha rule rejects number", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a string");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a string",
+  );
 });
 
-Deno.test("alpha rule allows null/undefined to pass through", async () => {
+test("alpha rule allows null/undefined to pass through", async () => {
   const alphaSchema = alpha();
 
   const nullResult = await alphaSchema["~standard"].validate(null);
@@ -122,6 +123,6 @@ Deno.test("alpha rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

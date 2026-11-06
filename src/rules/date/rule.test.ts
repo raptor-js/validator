@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { date } from "./rule.ts";
 
-Deno.test("date rule validates Date object successfully", async () => {
+test("date rule validates Date object successfully", async () => {
   const dateSchema = date();
   const testDate = new Date("2025-01-15");
 
@@ -17,10 +15,10 @@ Deno.test("date rule validates Date object successfully", async () => {
     );
   }
 
-  assertEquals(result.value, testDate);
+  assert.deepStrictEqual(result.value, testDate);
 });
 
-Deno.test("date rule validates ISO date string successfully", async () => {
+test("date rule validates ISO date string successfully", async () => {
   const dateSchema = date();
 
   const result = await dateSchema["~standard"].validate("2025-01-15");
@@ -31,10 +29,10 @@ Deno.test("date rule validates ISO date string successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "2025-01-15");
+  assert.deepStrictEqual(result.value, "2025-01-15");
 });
 
-Deno.test("date rule validates timestamp successfully", async () => {
+test("date rule validates timestamp successfully", async () => {
   const dateSchema = date();
 
   const timestamp = 1705363200000;
@@ -47,10 +45,10 @@ Deno.test("date rule validates timestamp successfully", async () => {
     );
   }
 
-  assertEquals(result.value, timestamp);
+  assert.deepStrictEqual(result.value, timestamp);
 });
 
-Deno.test("date rule rejects invalid Date object", async () => {
+test("date rule rejects invalid Date object", async () => {
   const dateSchema = date();
 
   const result = await dateSchema["~standard"].validate(new Date("invalid"));
@@ -59,11 +57,14 @@ Deno.test("date rule rejects invalid Date object", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a valid date");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a valid date",
+  );
 });
 
-Deno.test("date rule rejects invalid date string", async () => {
+test("date rule rejects invalid date string", async () => {
   const dateSchema = date();
 
   const result = await dateSchema["~standard"].validate("not a date");
@@ -72,10 +73,10 @@ Deno.test("date rule rejects invalid date string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("date rule rejects boolean", async () => {
+test("date rule rejects boolean", async () => {
   const dateSchema = date();
 
   const result = await dateSchema["~standard"].validate(true);
@@ -84,10 +85,10 @@ Deno.test("date rule rejects boolean", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("date rule allows null/undefined to pass through", async () => {
+test("date rule allows null/undefined to pass through", async () => {
   const dateSchema = date();
 
   const nullResult = await dateSchema["~standard"].validate(null);
@@ -97,6 +98,6 @@ Deno.test("date rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

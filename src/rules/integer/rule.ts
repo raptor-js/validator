@@ -17,19 +17,23 @@ export function integer(): StandardSchemaV1<number | null | undefined> {
 
         if (typeof value !== "number" || isNaN(value)) {
           return {
-            issues: [{
-              message: "The field must be an integer",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be an integer",
+                path: [],
+              },
+            ],
           };
         }
 
         if (!Number.isInteger(value)) {
           return {
-            issues: [{
-              message: "The field must be an integer",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be an integer",
+                path: [],
+              },
+            ],
           };
         }
 

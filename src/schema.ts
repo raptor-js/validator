@@ -36,10 +36,12 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
       ): Promise<StandardSchemaV1.Result<InferSchemaOutput<T>>> {
         if (typeof data !== "object" || data === null || Array.isArray(data)) {
           return {
-            issues: [{
-              message: "Expected an object",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "Expected an object",
+                path: [],
+              },
+            ],
           };
         }
 
@@ -58,10 +60,7 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
 
               issues.push({
                 ...issue,
-                path: [
-                  field,
-                  ...nestedPath,
-                ],
+                path: [field, ...nestedPath],
               });
             }
 
@@ -85,7 +84,8 @@ export function schema<T extends Record<string, StandardSchemaV1>>(
  * Infer the output type from a schema definition.
  */
 type InferSchemaOutput<T extends Record<string, StandardSchemaV1>> = {
-  // deno-lint-ignore no-explicit-any
-  [K in keyof T]: T[K] extends StandardSchemaV1<any, infer Output> ? Output
+  // biome-ignore lint/suspicious/noExplicitAny: any input type is accepted when inferring the output
+  [K in keyof T]: T[K] extends StandardSchemaV1<any, infer Output>
+    ? Output
     : never;
 };

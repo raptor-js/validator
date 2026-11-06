@@ -17,10 +17,12 @@ export function url(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
@@ -29,10 +31,12 @@ export function url(): StandardSchemaV1<string | null | undefined> {
           return { value };
         } catch {
           return {
-            issues: [{
-              message: "The field must be a valid URL",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a valid URL",
+                path: [],
+              },
+            ],
           };
         }
       },

@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { boolean } from "./rule.ts";
 
-Deno.test("boolean rule validates true successfully", async () => {
+test("boolean rule validates true successfully", async () => {
   const booleanSchema = boolean();
 
   const result = await booleanSchema["~standard"].validate(true);
@@ -16,10 +14,10 @@ Deno.test("boolean rule validates true successfully", async () => {
     );
   }
 
-  assertEquals(result.value, true);
+  assert.deepStrictEqual(result.value, true);
 });
 
-Deno.test("boolean rule validates false successfully", async () => {
+test("boolean rule validates false successfully", async () => {
   const booleanSchema = boolean();
 
   const result = await booleanSchema["~standard"].validate(false);
@@ -30,10 +28,10 @@ Deno.test("boolean rule validates false successfully", async () => {
     );
   }
 
-  assertEquals(result.value, false);
+  assert.deepStrictEqual(result.value, false);
 });
 
-Deno.test("boolean rule rejects string", async () => {
+test("boolean rule rejects string", async () => {
   const booleanSchema = boolean();
 
   const result = await booleanSchema["~standard"].validate("true");
@@ -42,11 +40,14 @@ Deno.test("boolean rule rejects string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a boolean");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a boolean",
+  );
 });
 
-Deno.test("boolean rule rejects number", async () => {
+test("boolean rule rejects number", async () => {
   const booleanSchema = boolean();
 
   const result = await booleanSchema["~standard"].validate(1);
@@ -55,10 +56,10 @@ Deno.test("boolean rule rejects number", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("boolean rule rejects object", async () => {
+test("boolean rule rejects object", async () => {
   const booleanSchema = boolean();
 
   const result = await booleanSchema["~standard"].validate({});
@@ -67,10 +68,10 @@ Deno.test("boolean rule rejects object", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("boolean rule rejects array", async () => {
+test("boolean rule rejects array", async () => {
   const booleanSchema = boolean();
 
   const result = await booleanSchema["~standard"].validate([true]);
@@ -79,10 +80,10 @@ Deno.test("boolean rule rejects array", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("boolean rule allows null/undefined to pass through", async () => {
+test("boolean rule allows null/undefined to pass through", async () => {
   const booleanSchema = boolean();
 
   const nullResult = await booleanSchema["~standard"].validate(null);
@@ -92,6 +93,6 @@ Deno.test("boolean rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

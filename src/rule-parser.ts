@@ -1,4 +1,4 @@
-import { ServerError } from "@raptor/kernel";
+import { ServerError } from "@raptor-js/kernel";
 import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
 import { gt } from "./rules/gt/rule.ts";
@@ -109,7 +109,10 @@ export default class RuleParser {
     if (ruleString.includes(":")) {
       const [name, ...paramParts] = ruleString.split(":");
 
-      const params = paramParts.join(":").split(",").map((p) => p.trim());
+      const params = paramParts
+        .join(":")
+        .split(",")
+        .map((p) => p.trim());
 
       const factory = this.factories.get(name);
 
@@ -147,7 +150,7 @@ export default class RuleParser {
       typeof value === "object" &&
       value !== null &&
       "~standard" in value &&
-      // deno-lint-ignore no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: the ~standard key is read before its type is known
       typeof (value as any)["~standard"] === "object"
     );
   }

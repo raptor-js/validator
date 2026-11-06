@@ -21,25 +21,29 @@ export function startsWith(
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
         const startsWithAny = prefixes.some((prefix) =>
-          value.startsWith(prefix)
+          value.startsWith(prefix),
         );
 
         if (!startsWithAny) {
           const prefixList = prefixes.join(", ");
 
           return {
-            issues: [{
-              message: `The field must start with one of: ${prefixList}`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must start with one of: ${prefixList}`,
+                path: [],
+              },
+            ],
           };
         }
 

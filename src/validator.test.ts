@@ -1,10 +1,8 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
-import { assertEquals, assertExists } from "@std/assert";
-
-import { Kernel } from "@raptor/kernel";
-import { Context } from "@raptor/types";
+import { Kernel } from "@raptor-js/kernel";
+import type { Context } from "@raptor-js/types";
 
 import { rules } from "./rules.ts";
 import validator from "./helper.ts";
@@ -12,7 +10,7 @@ import { schema } from "./schema.ts";
 
 const APP_URL = "http://localhost:8000";
 
-Deno.test("test validator attaches validate method to request", async () => {
+test("test validator attaches validate method to request", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -26,10 +24,10 @@ Deno.test("test validator attaches validate method to request", async () => {
 
   await app.respond(new Request(APP_URL, { method: "POST" }));
 
-  assertEquals(methodExists, true);
+  assert.deepStrictEqual(methodExists, true);
 });
 
-Deno.test("test validator attaches safe validation method to request", async () => {
+test("test validator attaches safe validation method to request", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -44,10 +42,10 @@ Deno.test("test validator attaches safe validation method to request", async () 
 
   await app.respond(new Request(APP_URL, { method: "POST" }));
 
-  assertEquals(methodExists, true);
+  assert.deepStrictEqual(methodExists, true);
 });
 
-Deno.test("test validate returns data on successful validation", async () => {
+test("test validate returns data on successful validation", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -73,11 +71,11 @@ Deno.test("test validate returns data on successful validation", async () => {
     }),
   );
 
-  assertEquals(receivedData.name, "Dr. Ian Malcolm");
-  assertEquals(receivedData.age, 37);
+  assert.deepStrictEqual(receivedData.name, "Dr. Ian Malcolm");
+  assert.deepStrictEqual(receivedData.age, 37);
 });
 
-Deno.test("test safe validation returns success result on valid data", async () => {
+test("test safe validation returns success result on valid data", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -106,12 +104,12 @@ Deno.test("test safe validation returns success result on valid data", async () 
     }),
   );
 
-  assertEquals(result.issues, undefined);
-  assertEquals(result.value.name, "Dr. Ellie Satler");
-  assertEquals(result.value.email, "john.hammond@ingen.com");
+  assert.deepStrictEqual(result.issues, undefined);
+  assert.deepStrictEqual(result.value.name, "Dr. Ellie Satler");
+  assert.deepStrictEqual(result.value.email, "john.hammond@ingen.com");
 });
 
-Deno.test("test validate throws 422 on validation failure", async () => {
+test("test validate throws 422 on validation failure", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -135,10 +133,10 @@ Deno.test("test validate throws 422 on validation failure", async () => {
     }),
   );
 
-  assertEquals(response.status, 422);
+  assert.deepStrictEqual(response.status, 422);
 });
 
-Deno.test("test validate throws on missing required fields", async () => {
+test("test validate throws on missing required fields", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -162,10 +160,10 @@ Deno.test("test validate throws on missing required fields", async () => {
     }),
   );
 
-  assertEquals(response.status, 422);
+  assert.deepStrictEqual(response.status, 422);
 });
 
-Deno.test("test safe validation returns failure result on invalid data", async () => {
+test("test safe validation returns failure result on invalid data", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -194,11 +192,11 @@ Deno.test("test safe validation returns failure result on invalid data", async (
     }),
   );
 
-  assertExists(result.issues);
-  assertEquals(result.value, undefined);
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.value, undefined);
 });
 
-Deno.test("test safe validation does not throw on validation failure", async () => {
+test("test safe validation does not throw on validation failure", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -232,11 +230,11 @@ Deno.test("test safe validation does not throw on validation failure", async () 
     }),
   );
 
-  assertEquals(threwError, false);
-  assertEquals(hasIssues, true);
+  assert.deepStrictEqual(threwError, false);
+  assert.deepStrictEqual(hasIssues, true);
 });
 
-Deno.test("test safe validation handles missing required fields", async () => {
+test("test safe validation handles missing required fields", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -262,11 +260,11 @@ Deno.test("test safe validation handles missing required fields", async () => {
     }),
   );
 
-  assertExists(result.issues);
-  assertEquals(result.value, undefined);
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.value, undefined);
 });
 
-Deno.test("test safe validation handles empty request body", async () => {
+test("test safe validation handles empty request body", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -291,10 +289,10 @@ Deno.test("test safe validation handles empty request body", async () => {
     }),
   );
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("test validate works with nested schemas", async () => {
+test("test validate works with nested schemas", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -329,12 +327,12 @@ Deno.test("test validate works with nested schemas", async () => {
     }),
   );
 
-  assertEquals(receivedData.username, "johnhammond");
-  assertEquals(receivedData.account.email, "john.hammond@ingen.com");
-  assertEquals(receivedData.account.age, 30);
+  assert.deepStrictEqual(receivedData.username, "johnhammond");
+  assert.deepStrictEqual(receivedData.account.email, "john.hammond@ingen.com");
+  assert.deepStrictEqual(receivedData.account.age, 30);
 });
 
-Deno.test("test safe validation works with nested schemas", async () => {
+test("test safe validation works with nested schemas", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -371,12 +369,15 @@ Deno.test("test safe validation works with nested schemas", async () => {
     }),
   );
 
-  assertEquals(result.issues, undefined);
-  assertEquals(result.value.user.profile.name, "John");
-  assertEquals(result.value.user.profile.email, "john.hammond@ingen.com");
+  assert.deepStrictEqual(result.issues, undefined);
+  assert.deepStrictEqual(result.value.user.profile.name, "John");
+  assert.deepStrictEqual(
+    result.value.user.profile.email,
+    "john.hammond@ingen.com",
+  );
 });
 
-Deno.test("test validate handles optional fields", async () => {
+test("test validate handles optional fields", async () => {
   const app = new Kernel();
 
   app.use(validator());
@@ -402,6 +403,6 @@ Deno.test("test validate handles optional fields", async () => {
     }),
   );
 
-  assertEquals(receivedData.name, "Ian");
-  assertEquals(receivedData.bio, undefined);
+  assert.deepStrictEqual(receivedData.name, "Ian");
+  assert.deepStrictEqual(receivedData.bio, undefined);
 });

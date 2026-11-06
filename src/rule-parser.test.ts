@@ -1,115 +1,108 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists, assertThrows } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import RuleParser, { type RuleFactory } from "./rule-parser.ts";
 
-Deno.test("rule parser parses single non-parameterised rule", () => {
+test("rule parser parses single non-parameterised rule", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required");
 
-  assertEquals(validators.length, 1);
-  assertExists(validators[0]["~standard"]);
-  assertEquals(validators[0]["~standard"].vendor, "raptor");
+  assert.deepStrictEqual(validators.length, 1);
+  assert.ok(validators[0]["~standard"] != null);
+  assert.deepStrictEqual(validators[0]["~standard"].vendor, "raptor");
 });
 
-Deno.test("rule parser parses multiple non-parameterised rules", () => {
+test("rule parser parses multiple non-parameterised rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string");
 
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser parses single parameterised rule", () => {
+test("rule parser parses single parameterised rule", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("min:8");
 
-  assertEquals(validators.length, 1);
-  assertExists(validators[0]["~standard"]);
+  assert.deepStrictEqual(validators.length, 1);
+  assert.ok(validators[0]["~standard"] != null);
 });
 
-Deno.test("rule parser parses multiple parameterised rules", () => {
+test("rule parser parses multiple parameterised rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("min:8|max:100");
 
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser parses mixed parameterised and non-parameterised rules", () => {
+test("rule parser parses mixed parameterised and non-parameterised rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string|min:8|max:100");
 
-  assertEquals(validators.length, 4);
+  assert.deepStrictEqual(validators.length, 4);
 });
 
-Deno.test("rule parser parses mixed array of parameterised and non-parameterised rules", () => {
+test("rule parser parses mixed array of parameterised and non-parameterised rules", () => {
   const parser = new RuleParser();
 
-  const validators = parser.parse([
-    "required",
-    "string",
-    "min:8",
-    "max:100",
-  ]);
+  const validators = parser.parse(["required", "string", "min:8", "max:100"]);
 
-  assertEquals(validators.length, 4);
+  assert.deepStrictEqual(validators.length, 4);
 });
 
-Deno.test("rule parser trims whitespace from rule names", () => {
+test("rule parser trims whitespace from rule names", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse(" required | string | min:8 ");
 
-  assertEquals(validators.length, 3);
+  assert.deepStrictEqual(validators.length, 3);
 });
 
-Deno.test("rule parser filters out extra pipes", () => {
+test("rule parser filters out extra pipes", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required||string");
 
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser filters out multiple consecutive pipes", () => {
+test("rule parser filters out multiple consecutive pipes", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|||string");
 
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser filters out leading pipe", () => {
+test("rule parser filters out leading pipe", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("|required|string");
 
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser filters out trailing pipe", () => {
+test("rule parser filters out trailing pipe", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|");
 
-  assertEquals(validators.length, 1);
+  assert.deepStrictEqual(validators.length, 1);
 });
 
-Deno.test("rule parser filters out whitespace-only segments", () => {
+test("rule parser filters out whitespace-only segments", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|  |string");
 
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser parses numeric parameter", async () => {
+test("rule parser parses numeric parameter", async () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("min:8");
@@ -120,10 +113,10 @@ Deno.test("rule parser parses numeric parameter", async () => {
     throw new Error("Expected validation to fail");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("rule parser parses multiple parameters", () => {
+test("rule parser parses multiple parameters", () => {
   const parser = new RuleParser();
 
   const mockFactory = ((...params: any[]) => ({
@@ -138,10 +131,10 @@ Deno.test("rule parser parses multiple parameters", () => {
 
   const validators = parser.parse("multi:1,2,3");
 
-  assertEquals(validators.length, 1);
+  assert.deepStrictEqual(validators.length, 1);
 });
 
-Deno.test("RuleParser parses string parameter", () => {
+test("RuleParser parses string parameter", () => {
   const parser = new RuleParser();
 
   const mockFactory = ((param: string) => ({
@@ -155,10 +148,10 @@ Deno.test("RuleParser parses string parameter", () => {
   parser.register("custom", mockFactory);
 
   const validators = parser.parse("custom:value");
-  assertEquals(validators.length, 1);
+  assert.deepStrictEqual(validators.length, 1);
 });
 
-Deno.test("rule parser handles colon in parameter value", () => {
+test("rule parser handles colon in parameter value", () => {
   const parser = new RuleParser();
 
   const mockFactory = ((param: string) => ({
@@ -172,10 +165,10 @@ Deno.test("rule parser handles colon in parameter value", () => {
   parser.register("url", mockFactory);
 
   const validators = parser.parse("url:https://example.com");
-  assertEquals(validators.length, 1);
+  assert.deepStrictEqual(validators.length, 1);
 });
 
-Deno.test("rule parser converts numeric string parameters to numbers", async () => {
+test("rule parser converts numeric string parameters to numbers", async () => {
   const parser = new RuleParser();
 
   let capturedParam: any;
@@ -197,11 +190,11 @@ Deno.test("rule parser converts numeric string parameters to numbers", async () 
 
   await validators[0]["~standard"].validate(null);
 
-  assertEquals(typeof capturedParam, "number");
-  assertEquals(capturedParam, 42);
+  assert.deepStrictEqual(typeof capturedParam, "number");
+  assert.deepStrictEqual(capturedParam, 42);
 });
 
-Deno.test("rule parser keeps non-numeric string parameters as strings", async () => {
+test("rule parser keeps non-numeric string parameters as strings", async () => {
   const parser = new RuleParser();
 
   let capturedParam: any;
@@ -224,11 +217,11 @@ Deno.test("rule parser keeps non-numeric string parameters as strings", async ()
 
   await validators[0]["~standard"].validate(null);
 
-  assertEquals(typeof capturedParam, "string");
-  assertEquals(capturedParam, "abc");
+  assert.deepStrictEqual(typeof capturedParam, "string");
+  assert.deepStrictEqual(capturedParam, "abc");
 });
 
-Deno.test("rule parser handles empty parameter value", () => {
+test("rule parser handles empty parameter value", () => {
   const parser = new RuleParser();
 
   let capturedParams: any[];
@@ -248,10 +241,10 @@ Deno.test("rule parser handles empty parameter value", () => {
   parser.register("test", mockFactory);
   parser.parse("test:");
 
-  assertEquals(capturedParams![0], "");
+  assert.deepStrictEqual(capturedParams![0], "");
 });
 
-Deno.test("rule parser trims parameter values", () => {
+test("rule parser trims parameter values", () => {
   const parser = new RuleParser();
 
   let capturedParam: any;
@@ -271,10 +264,10 @@ Deno.test("rule parser trims parameter values", () => {
   parser.register("test", mockFactory);
   parser.parse("test: value ");
 
-  assertEquals(capturedParam, "value");
+  assert.deepStrictEqual(capturedParam, "value");
 });
 
-Deno.test("rule parser trims multiple parameter values", () => {
+test("rule parser trims multiple parameter values", () => {
   const parser = new RuleParser();
 
   let capturedParams: any[];
@@ -294,42 +287,45 @@ Deno.test("rule parser trims multiple parameter values", () => {
   parser.register("test", mockFactory);
   parser.parse("test: a , b , c ");
 
-  assertEquals(capturedParams![0], "a");
-  assertEquals(capturedParams![1], "b");
-  assertEquals(capturedParams![2], "c");
+  assert.deepStrictEqual(capturedParams![0], "a");
+  assert.deepStrictEqual(capturedParams![1], "b");
+  assert.deepStrictEqual(capturedParams![2], "c");
 });
 
-Deno.test("rule parser throws error for unknown non-parameterised rule", () => {
+test("rule parser throws error for unknown non-parameterised rule", () => {
   const parser = new RuleParser();
 
-  assertThrows(
+  assert.throws(
     () => parser.parse("unknown"),
-    Error,
-    "Unknown validation rule: unknown",
+    (error) =>
+      error instanceof Error &&
+      error.message.includes("Unknown validation rule: unknown"),
   );
 });
 
-Deno.test("rule parser throws error for unknown parameterised rule", () => {
+test("rule parser throws error for unknown parameterised rule", () => {
   const parser = new RuleParser();
 
-  assertThrows(
+  assert.throws(
     () => parser.parse("unknown:8"),
-    Error,
-    "Unknown validation rule: unknown",
+    (error) =>
+      error instanceof Error &&
+      error.message.includes("Unknown validation rule: unknown"),
   );
 });
 
-Deno.test("rule parser throws error for unknown rule in chain", () => {
+test("rule parser throws error for unknown rule in chain", () => {
   const parser = new RuleParser();
 
-  assertThrows(
+  assert.throws(
     () => parser.parse("required|unknown|string"),
-    Error,
-    "Unknown validation rule: unknown",
+    (error) =>
+      error instanceof Error &&
+      error.message.includes("Unknown validation rule: unknown"),
   );
 });
 
-Deno.test("rule parser registers custom non-parameterised rule", () => {
+test("rule parser registers custom non-parameterised rule", () => {
   const parser = new RuleParser();
 
   const customRule = (() => ({
@@ -344,11 +340,11 @@ Deno.test("rule parser registers custom non-parameterised rule", () => {
 
   const validators = parser.parse("custom");
 
-  assertEquals(validators.length, 1);
-  assertEquals(validators[0]["~standard"].vendor, "custom");
+  assert.deepStrictEqual(validators.length, 1);
+  assert.deepStrictEqual(validators[0]["~standard"].vendor, "custom");
 });
 
-Deno.test("rule parser registers custom parameterised rule", () => {
+test("rule parser registers custom parameterised rule", () => {
   const parser = new RuleParser();
 
   const customFactory = ((param: number) => ({
@@ -363,10 +359,10 @@ Deno.test("rule parser registers custom parameterised rule", () => {
 
   const validators = parser.parse("custom:42");
 
-  assertEquals(validators.length, 1);
+  assert.deepStrictEqual(validators.length, 1);
 });
 
-Deno.test("rule parser allows overriding default rules", () => {
+test("rule parser allows overriding default rules", () => {
   const parser = new RuleParser();
 
   const customRequired = (() => ({
@@ -381,10 +377,10 @@ Deno.test("rule parser allows overriding default rules", () => {
 
   const validators = parser.parse("required");
 
-  assertEquals(validators[0]["~standard"].vendor, "custom-required");
+  assert.deepStrictEqual(validators[0]["~standard"].vendor, "custom-required");
 });
 
-Deno.test("rule parser can chain custom rules with default rules", () => {
+test("rule parser can chain custom rules with default rules", () => {
   const parser = new RuleParser();
 
   const customRule = (() => ({
@@ -399,40 +395,40 @@ Deno.test("rule parser can chain custom rules with default rules", () => {
 
   const validators = parser.parse("required|custom|string");
 
-  assertEquals(validators.length, 3);
-  assertEquals(validators[1]["~standard"].vendor, "custom");
+  assert.deepStrictEqual(validators.length, 3);
+  assert.deepStrictEqual(validators[1]["~standard"].vendor, "custom");
 });
 
-Deno.test("rule parser.has() returns true for registered non-parameterised rule", () => {
+test("rule parser.has() returns true for registered non-parameterised rule", () => {
   const parser = new RuleParser();
 
-  assertEquals(parser.has("required"), true);
-  assertEquals(parser.has("string"), true);
+  assert.deepStrictEqual(parser.has("required"), true);
+  assert.deepStrictEqual(parser.has("string"), true);
 });
 
-Deno.test("rule parser.has() returns true for registered parameterised rule", () => {
+test("rule parser.has() returns true for registered parameterised rule", () => {
   const parser = new RuleParser();
 
-  assertEquals(parser.has("min:8"), true);
-  assertEquals(parser.has("max:100"), true);
+  assert.deepStrictEqual(parser.has("min:8"), true);
+  assert.deepStrictEqual(parser.has("max:100"), true);
 });
 
-Deno.test("rule parser.has() returns false for unknown rule", () => {
+test("rule parser.has() returns false for unknown rule", () => {
   const parser = new RuleParser();
 
-  assertEquals(parser.has("unknown"), false);
-  assertEquals(parser.has("unknown:8"), false);
+  assert.deepStrictEqual(parser.has("unknown"), false);
+  assert.deepStrictEqual(parser.has("unknown:8"), false);
 });
 
-Deno.test("rule parser.has() checks base name for parameterised rules", () => {
+test("rule parser.has() checks base name for parameterised rules", () => {
   const parser = new RuleParser();
 
-  assertEquals(parser.has("min:8"), true);
-  assertEquals(parser.has("min:999"), true);
-  assertEquals(parser.has("min:abc"), true);
+  assert.deepStrictEqual(parser.has("min:8"), true);
+  assert.deepStrictEqual(parser.has("min:999"), true);
+  assert.deepStrictEqual(parser.has("min:abc"), true);
 });
 
-Deno.test("rule parser.has() returns true for custom registered rule", () => {
+test("rule parser.has() returns true for custom registered rule", () => {
   const parser = new RuleParser();
 
   const customRule = (() => ({
@@ -445,10 +441,10 @@ Deno.test("rule parser.has() returns true for custom registered rule", () => {
 
   parser.register("custom", customRule);
 
-  assertEquals(parser.has("custom"), true);
+  assert.deepStrictEqual(parser.has("custom"), true);
 });
 
-Deno.test("rule parser.has() returns true for custom parameterised rule", () => {
+test("rule parser.has() returns true for custom parameterised rule", () => {
   const parser = new RuleParser();
 
   const customFactory = ((param: any) => ({
@@ -461,32 +457,32 @@ Deno.test("rule parser.has() returns true for custom parameterised rule", () => 
 
   parser.register("custom", customFactory);
 
-  assertEquals(parser.has("custom:value"), true);
+  assert.deepStrictEqual(parser.has("custom:value"), true);
 });
 
-Deno.test("rule parser registers default non-parameterised rules", () => {
+test("rule parser registers default non-parameterised rules", () => {
   const parser = new RuleParser();
 
-  assertEquals(parser.has("required"), true);
-  assertEquals(parser.has("string"), true);
+  assert.deepStrictEqual(parser.has("required"), true);
+  assert.deepStrictEqual(parser.has("string"), true);
 });
 
-Deno.test("rule parser registers default parameterised rules", () => {
+test("rule parser registers default parameterised rules", () => {
   const parser = new RuleParser();
 
-  assertEquals(parser.has("min"), true);
-  assertEquals(parser.has("max"), true);
+  assert.deepStrictEqual(parser.has("min"), true);
+  assert.deepStrictEqual(parser.has("max"), true);
 });
 
-Deno.test("rule parser can parse all default rules", () => {
+test("rule parser can parse all default rules", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string|min:1|max:100");
 
-  assertEquals(validators.length, 4);
+  assert.deepStrictEqual(validators.length, 4);
 });
 
-Deno.test("rule parser creates functional validators that can validate", async () => {
+test("rule parser creates functional validators that can validate", async () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string|min:3");
@@ -510,7 +506,7 @@ Deno.test("rule parser creates functional validators that can validate", async (
   }
 });
 
-Deno.test("rule parser validators work correctly in sequence", async () => {
+test("rule parser validators work correctly in sequence", async () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("required|string|min:5");
@@ -521,8 +517,8 @@ Deno.test("rule parser validators work correctly in sequence", async () => {
     const result = await validator["~standard"].validate(value);
 
     if ("issues" in result) {
-      assertExists(result.issues);
-      assertEquals(result.issues[0].message.includes("5"), true);
+      assert.ok(result.issues != null);
+      assert.deepStrictEqual(result.issues[0].message.includes("5"), true);
 
       return;
     }
@@ -533,7 +529,7 @@ Deno.test("rule parser validators work correctly in sequence", async () => {
   throw new Error("Expected validation to fail on min:5");
 });
 
-Deno.test("rule parser validators maintain independence", async () => {
+test("rule parser validators maintain independence", async () => {
   const parser = new RuleParser();
 
   const validators1 = parser.parse("min:5");
@@ -551,67 +547,69 @@ Deno.test("rule parser validators maintain independence", async () => {
   }
 });
 
-Deno.test("rule parser handles empty string by returning empty array", () => {
+test("rule parser handles empty string by returning empty array", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("");
-  assertEquals(validators.length, 0);
+  assert.deepStrictEqual(validators.length, 0);
 });
 
-Deno.test("rule parser handles single pipe by returning empty array", () => {
+test("rule parser handles single pipe by returning empty array", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("|");
-  assertEquals(validators.length, 0);
+  assert.deepStrictEqual(validators.length, 0);
 });
 
-Deno.test("rule parser handles only whitespace", () => {
+test("rule parser handles only whitespace", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("   ");
-  assertEquals(validators.length, 0);
+  assert.deepStrictEqual(validators.length, 0);
 });
 
-Deno.test("rule parser handles pipes with only whitespace between", () => {
+test("rule parser handles pipes with only whitespace between", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("|   |   |");
-  assertEquals(validators.length, 0);
+  assert.deepStrictEqual(validators.length, 0);
 });
 
-Deno.test("rule parser handles complex whitespace and pipe combinations", () => {
+test("rule parser handles complex whitespace and pipe combinations", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse("  | required |  | string | |  ");
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser handles very long rule chains", () => {
+test("rule parser handles very long rule chains", () => {
   const parser = new RuleParser();
 
   const validators = parser.parse(
     "required|string|min:1|max:100|required|string|min:1|max:100",
   );
-  assertEquals(validators.length, 8);
+  assert.deepStrictEqual(validators.length, 8);
 });
 
-Deno.test("rule parser handles rule names with different casings", () => {
+test("rule parser handles rule names with different casings", () => {
   const parser = new RuleParser();
 
-  assertThrows(
+  assert.throws(
     () => parser.parse("REQUIRED"),
-    Error,
-    "Unknown validation rule: REQUIRED",
+    (error) =>
+      error instanceof Error &&
+      error.message.includes("Unknown validation rule: REQUIRED"),
   );
 
-  assertThrows(
+  assert.throws(
     () => parser.parse("Required"),
-    Error,
-    "Unknown validation rule: Required",
+    (error) =>
+      error instanceof Error &&
+      error.message.includes("Unknown validation rule: Required"),
   );
 });
 
-Deno.test("rule parser handles numeric rule names if registered", () => {
+test("rule parser handles numeric rule names if registered", () => {
   const parser = new RuleParser();
 
   const numericRule = (() => ({
@@ -625,10 +623,10 @@ Deno.test("rule parser handles numeric rule names if registered", () => {
   parser.register("123", numericRule);
 
   const validators = parser.parse("123");
-  assertEquals(validators.length, 1);
+  assert.deepStrictEqual(validators.length, 1);
 });
 
-Deno.test("rule parser handles special characters in custom rule names", () => {
+test("rule parser handles special characters in custom rule names", () => {
   const parser = new RuleParser();
 
   const specialRule = (() => ({
@@ -643,10 +641,10 @@ Deno.test("rule parser handles special characters in custom rule names", () => {
   parser.register("my_rule", specialRule);
 
   const validators = parser.parse("my-rule|my_rule");
-  assertEquals(validators.length, 2);
+  assert.deepStrictEqual(validators.length, 2);
 });
 
-Deno.test("rule parser instances are independent", () => {
+test("rule parser instances are independent", () => {
   const parser1 = new RuleParser();
   const parser2 = new RuleParser();
 
@@ -660,11 +658,11 @@ Deno.test("rule parser instances are independent", () => {
 
   parser1.register("custom", customRule);
 
-  assertEquals(parser1.has("custom"), true);
-  assertEquals(parser2.has("custom"), false);
+  assert.deepStrictEqual(parser1.has("custom"), true);
+  assert.deepStrictEqual(parser2.has("custom"), false);
 });
 
-Deno.test("rule parser can be extended without affecting other instances", () => {
+test("rule parser can be extended without affecting other instances", () => {
   const baseParser = new RuleParser();
   const extendedParser = new RuleParser();
 
@@ -679,8 +677,8 @@ Deno.test("rule parser can be extended without affecting other instances", () =>
   extendedParser.register("custom", customRule);
 
   const baseValidators = baseParser.parse("required|string");
-  assertEquals(baseValidators.length, 2);
+  assert.deepStrictEqual(baseValidators.length, 2);
 
   const extendedValidators = extendedParser.parse("required|custom|string");
-  assertEquals(extendedValidators.length, 3);
+  assert.deepStrictEqual(extendedValidators.length, 3);
 });

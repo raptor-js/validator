@@ -17,20 +17,24 @@ export function alphaDash(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
         if (!/^[a-zA-Z0-9_-]+$/.test(value)) {
           return {
-            issues: [{
-              message:
-                "The field must contain only letters, numbers, dashes, and underscores",
-              path: [],
-            }],
+            issues: [
+              {
+                message:
+                  "The field must contain only letters, numbers, dashes, and underscores",
+                path: [],
+              },
+            ],
           };
         }
 

@@ -1,9 +1,9 @@
-// deno-lint-ignore-file no-explicit-any
+// biome-ignore-all lint/suspicious/noExplicitAny: the Request prototype is patched at runtime and has no typed slots
 
 import type { StandardSchemaV1 } from "./types/standard-schema-v1.ts";
 
-import { UnprocessableEntity } from "@raptor/kernel";
-import type { Context, Middleware } from "@raptor/types";
+import { UnprocessableEntity } from "@raptor-js/kernel";
+import type { Context, Middleware } from "@raptor-js/types";
 
 import type { Config } from "./config.ts";
 import RuleParser from "./rule-parser.ts";

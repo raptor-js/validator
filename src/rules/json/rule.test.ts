@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { json } from "./rule.ts";
 
-Deno.test("json rule validates JSON object string successfully", async () => {
+test("json rule validates JSON object string successfully", async () => {
   const jsonSchema = json();
 
   const result = await jsonSchema["~standard"].validate(
@@ -18,10 +16,10 @@ Deno.test("json rule validates JSON object string successfully", async () => {
     );
   }
 
-  assertEquals(result.value, '{"name":"John","age":30}');
+  assert.deepStrictEqual(result.value, '{"name":"John","age":30}');
 });
 
-Deno.test("json rule validates JSON array string successfully", async () => {
+test("json rule validates JSON array string successfully", async () => {
   const jsonSchema = json();
 
   const result = await jsonSchema["~standard"].validate("[1,2,3]");
@@ -32,10 +30,10 @@ Deno.test("json rule validates JSON array string successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "[1,2,3]");
+  assert.deepStrictEqual(result.value, "[1,2,3]");
 });
 
-Deno.test("json rule validates JSON string value successfully", async () => {
+test("json rule validates JSON string value successfully", async () => {
   const jsonSchema = json();
 
   const result = await jsonSchema["~standard"].validate('"hello"');
@@ -46,10 +44,10 @@ Deno.test("json rule validates JSON string value successfully", async () => {
     );
   }
 
-  assertEquals(result.value, '"hello"');
+  assert.deepStrictEqual(result.value, '"hello"');
 });
 
-Deno.test("json rule validates JSON number successfully", async () => {
+test("json rule validates JSON number successfully", async () => {
   const jsonSchema = json();
 
   const result = await jsonSchema["~standard"].validate("42");
@@ -60,10 +58,10 @@ Deno.test("json rule validates JSON number successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "42");
+  assert.deepStrictEqual(result.value, "42");
 });
 
-Deno.test("json rule rejects invalid JSON", async () => {
+test("json rule rejects invalid JSON", async () => {
   const jsonSchema = json();
 
   const result = await jsonSchema["~standard"].validate('{name: "John"}');
@@ -72,11 +70,14 @@ Deno.test("json rule rejects invalid JSON", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be valid JSON");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be valid JSON",
+  );
 });
 
-Deno.test("json rule rejects non-string value", async () => {
+test("json rule rejects non-string value", async () => {
   const jsonSchema = json();
 
   const result = await jsonSchema["~standard"].validate({ name: "John" });
@@ -85,11 +86,14 @@ Deno.test("json rule rejects non-string value", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a string");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a string",
+  );
 });
 
-Deno.test("json rule allows null/undefined to pass through", async () => {
+test("json rule allows null/undefined to pass through", async () => {
   const jsonSchema = json();
 
   const nullResult = await jsonSchema["~standard"].validate(null);
@@ -99,6 +103,6 @@ Deno.test("json rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

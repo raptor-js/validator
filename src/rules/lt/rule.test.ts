@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { lt } from "./rule.ts";
 
-Deno.test("lt rule validates number less than threshold successfully", async () => {
+test("lt rule validates number less than threshold successfully", async () => {
   const ltSchema = lt(10);
 
   const result = await ltSchema["~standard"].validate(5);
@@ -16,10 +14,10 @@ Deno.test("lt rule validates number less than threshold successfully", async () 
     );
   }
 
-  assertEquals(result.value, 5);
+  assert.deepStrictEqual(result.value, 5);
 });
 
-Deno.test("lt rule rejects number equal to threshold", async () => {
+test("lt rule rejects number equal to threshold", async () => {
   const ltSchema = lt(10);
 
   const result = await ltSchema["~standard"].validate(10);
@@ -28,11 +26,14 @@ Deno.test("lt rule rejects number equal to threshold", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be less than 10");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be less than 10",
+  );
 });
 
-Deno.test("lt rule rejects number greater than threshold", async () => {
+test("lt rule rejects number greater than threshold", async () => {
   const ltSchema = lt(10);
 
   const result = await ltSchema["~standard"].validate(15);
@@ -41,10 +42,10 @@ Deno.test("lt rule rejects number greater than threshold", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("lt rule allows null/undefined to pass through", async () => {
+test("lt rule allows null/undefined to pass through", async () => {
   const ltSchema = lt(10);
 
   const nullResult = await ltSchema["~standard"].validate(null);
@@ -54,6 +55,6 @@ Deno.test("lt rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

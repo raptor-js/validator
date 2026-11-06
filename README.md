@@ -4,9 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/raptor-js/validator/actions"><img src="https://github.com/raptor-js/validator/workflows/ci/badge.svg" alt="Build Status"></a>
-  <a href="jsr.io/@raptor/validator"><img src="https://jsr.io/badges/@raptor/validator" /></a>
-  <a href="jsr.io/@raptor/validator score"><img src="https://jsr.io/badges/@raptor/validator/score" /></a>
-  <a href="https://jsr.io/@raptor"><img src="https://jsr.io/badges/@raptor" alt="" /></a>
+  <a href="https://www.npmjs.com/package/@raptor-js/validator"><img src="https://img.shields.io/npm/v/@raptor-js/validator" alt="npm version" /></a>
 </p>
 
 ## Raptor Validator

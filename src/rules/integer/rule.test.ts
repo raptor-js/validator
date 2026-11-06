@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { integer } from "./rule.ts";
 
-Deno.test("integer rule validates whole number successfully", async () => {
+test("integer rule validates whole number successfully", async () => {
   const integerSchema = integer();
 
   const result = await integerSchema["~standard"].validate(42);
@@ -16,10 +14,10 @@ Deno.test("integer rule validates whole number successfully", async () => {
     );
   }
 
-  assertEquals(result.value, 42);
+  assert.deepStrictEqual(result.value, 42);
 });
 
-Deno.test("integer rule validates negative whole number successfully", async () => {
+test("integer rule validates negative whole number successfully", async () => {
   const integerSchema = integer();
 
   const result = await integerSchema["~standard"].validate(-10);
@@ -30,10 +28,10 @@ Deno.test("integer rule validates negative whole number successfully", async () 
     );
   }
 
-  assertEquals(result.value, -10);
+  assert.deepStrictEqual(result.value, -10);
 });
 
-Deno.test("integer rule validates zero successfully", async () => {
+test("integer rule validates zero successfully", async () => {
   const integerSchema = integer();
 
   const result = await integerSchema["~standard"].validate(0);
@@ -44,10 +42,10 @@ Deno.test("integer rule validates zero successfully", async () => {
     );
   }
 
-  assertEquals(result.value, 0);
+  assert.deepStrictEqual(result.value, 0);
 });
 
-Deno.test("integer rule rejects decimal number", async () => {
+test("integer rule rejects decimal number", async () => {
   const integerSchema = integer();
 
   const result = await integerSchema["~standard"].validate(3.14);
@@ -56,11 +54,14 @@ Deno.test("integer rule rejects decimal number", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be an integer");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be an integer",
+  );
 });
 
-Deno.test("integer rule rejects string", async () => {
+test("integer rule rejects string", async () => {
   const integerSchema = integer();
 
   const result = await integerSchema["~standard"].validate("42");
@@ -69,11 +70,14 @@ Deno.test("integer rule rejects string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be an integer");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be an integer",
+  );
 });
 
-Deno.test("integer rule rejects NaN", async () => {
+test("integer rule rejects NaN", async () => {
   const integerSchema = integer();
 
   const result = await integerSchema["~standard"].validate(NaN);
@@ -82,10 +86,10 @@ Deno.test("integer rule rejects NaN", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("integer rule allows null/undefined to pass through", async () => {
+test("integer rule allows null/undefined to pass through", async () => {
   const integerSchema = integer();
 
   const nullResult = await integerSchema["~standard"].validate(null);
@@ -95,6 +99,6 @@ Deno.test("integer rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

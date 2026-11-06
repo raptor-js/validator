@@ -30,10 +30,12 @@ export function numeric(): StandardSchemaV1<unknown> {
         }
 
         return {
-          issues: [{
-            message: "The field must be numeric",
-            path: [],
-          }],
+          issues: [
+            {
+              message: "The field must be numeric",
+              path: [],
+            },
+          ],
         };
       },
     },

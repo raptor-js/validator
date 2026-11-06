@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { url } from "./rule.ts";
 
-Deno.test("url rule validates HTTP URL successfully", async () => {
+test("url rule validates HTTP URL successfully", async () => {
   const urlSchema = url();
 
   const result = await urlSchema["~standard"].validate("http://example.com");
@@ -16,10 +14,10 @@ Deno.test("url rule validates HTTP URL successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "http://example.com");
+  assert.deepStrictEqual(result.value, "http://example.com");
 });
 
-Deno.test("url rule validates HTTPS URL successfully", async () => {
+test("url rule validates HTTPS URL successfully", async () => {
   const urlSchema = url();
 
   const result = await urlSchema["~standard"].validate("https://example.com");
@@ -30,10 +28,10 @@ Deno.test("url rule validates HTTPS URL successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "https://example.com");
+  assert.deepStrictEqual(result.value, "https://example.com");
 });
 
-Deno.test("url rule validates URL with path successfully", async () => {
+test("url rule validates URL with path successfully", async () => {
   const urlSchema = url();
 
   const result = await urlSchema["~standard"].validate(
@@ -46,10 +44,10 @@ Deno.test("url rule validates URL with path successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "https://example.com/path/to/page");
+  assert.deepStrictEqual(result.value, "https://example.com/path/to/page");
 });
 
-Deno.test("url rule validates URL with query parameters successfully", async () => {
+test("url rule validates URL with query parameters successfully", async () => {
   const urlSchema = url();
 
   const result = await urlSchema["~standard"].validate(
@@ -62,10 +60,10 @@ Deno.test("url rule validates URL with query parameters successfully", async () 
     );
   }
 
-  assertEquals(result.value, "https://example.com?foo=bar&baz=qux");
+  assert.deepStrictEqual(result.value, "https://example.com?foo=bar&baz=qux");
 });
 
-Deno.test("url rule rejects string without protocol", async () => {
+test("url rule rejects string without protocol", async () => {
   const urlSchema = url();
 
   const result = await urlSchema["~standard"].validate("example.com");
@@ -74,11 +72,14 @@ Deno.test("url rule rejects string without protocol", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a valid URL");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a valid URL",
+  );
 });
 
-Deno.test("url rule rejects invalid URL", async () => {
+test("url rule rejects invalid URL", async () => {
   const urlSchema = url();
 
   const result = await urlSchema["~standard"].validate("not a url");
@@ -87,10 +88,10 @@ Deno.test("url rule rejects invalid URL", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("url rule allows null/undefined to pass through", async () => {
+test("url rule allows null/undefined to pass through", async () => {
   const urlSchema = url();
 
   const nullResult = await urlSchema["~standard"].validate(null);
@@ -100,6 +101,6 @@ Deno.test("url rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

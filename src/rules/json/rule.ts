@@ -17,10 +17,12 @@ export function json(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
@@ -30,10 +32,12 @@ export function json(): StandardSchemaV1<string | null | undefined> {
           return { value };
         } catch {
           return {
-            issues: [{
-              message: "The field must be valid JSON",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be valid JSON",
+                path: [],
+              },
+            ],
           };
         }
       },

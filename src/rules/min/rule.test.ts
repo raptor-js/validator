@@ -1,8 +1,9 @@
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { min } from "./rule.ts";
 
-Deno.test("min rule validates string meeting minimum length", async () => {
+test("min rule validates string meeting minimum length", async () => {
   const minSchema = min(3);
 
   const result = await minSchema["~standard"].validate("hello");
@@ -13,10 +14,10 @@ Deno.test("min rule validates string meeting minimum length", async () => {
     );
   }
 
-  assertEquals(result.value, "hello");
+  assert.deepStrictEqual(result.value, "hello");
 });
 
-Deno.test("min rule rejects string below minimum length", async () => {
+test("min rule rejects string below minimum length", async () => {
   const minSchema = min(5);
 
   const result = await minSchema["~standard"].validate("hi");
@@ -25,14 +26,14 @@ Deno.test("min rule rejects string below minimum length", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
     result.issues[0].message,
     "The field must be at least 5 in length",
   );
 });
 
-Deno.test("min rule validates number meeting minimum value", async () => {
+test("min rule validates number meeting minimum value", async () => {
   const minSchema = min(18);
 
   const result = await minSchema["~standard"].validate(25);
@@ -43,10 +44,10 @@ Deno.test("min rule validates number meeting minimum value", async () => {
     );
   }
 
-  assertEquals(result.value, 25);
+  assert.deepStrictEqual(result.value, 25);
 });
 
-Deno.test("min rule rejects number below minimum value", async () => {
+test("min rule rejects number below minimum value", async () => {
   const minSchema = min(18);
 
   const result = await minSchema["~standard"].validate(10);
@@ -55,11 +56,14 @@ Deno.test("min rule rejects number below minimum value", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be at least 18");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be at least 18",
+  );
 });
 
-Deno.test("min rule validates array meeting minimum length", async () => {
+test("min rule validates array meeting minimum length", async () => {
   const minSchema = min(2);
 
   const result = await minSchema["~standard"].validate([1, 2, 3]);
@@ -70,10 +74,10 @@ Deno.test("min rule validates array meeting minimum length", async () => {
     );
   }
 
-  assertEquals(result.value, [1, 2, 3]);
+  assert.deepStrictEqual(result.value, [1, 2, 3]);
 });
 
-Deno.test("min rule rejects array below minimum length", async () => {
+test("min rule rejects array below minimum length", async () => {
   const minSchema = min(3);
 
   const result = await minSchema["~standard"].validate([1]);
@@ -82,10 +86,10 @@ Deno.test("min rule rejects array below minimum length", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("min rule allows null/undefined to pass through", async () => {
+test("min rule allows null/undefined to pass through", async () => {
   const minSchema = min(5);
 
   const nullResult = await minSchema["~standard"].validate(null);
@@ -95,6 +99,6 @@ Deno.test("min rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

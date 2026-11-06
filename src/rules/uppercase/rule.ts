@@ -17,19 +17,23 @@ export function uppercase(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
         if (value !== value.toUpperCase()) {
           return {
-            issues: [{
-              message: "The field must be uppercase",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be uppercase",
+                path: [],
+              },
+            ],
           };
         }
 

@@ -19,10 +19,12 @@ export function gt(threshold: number): StandardSchemaV1<unknown> {
 
         if (typeof value === "number" && value <= threshold) {
           return {
-            issues: [{
-              message: `The field must be greater than ${threshold}`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be greater than ${threshold}`,
+                path: [],
+              },
+            ],
           };
         }
 

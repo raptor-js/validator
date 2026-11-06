@@ -1,18 +1,18 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { rules } from "./rules.ts";
 import { schema } from "./schema.ts";
 import { optional } from "./optional.ts";
 
-Deno.test("optional doesn't throw validation error due to lack of existence", async () => {
+test("optional doesn't throw validation error due to lack of existence", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
-    metadata: optional(schema({
-      age: rules<number>("numeric|min:18"),
-    })),
+    metadata: optional(
+      schema({
+        age: rules<number>("numeric|min:18"),
+      }),
+    ),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -25,15 +25,17 @@ Deno.test("optional doesn't throw validation error due to lack of existence", as
     );
   }
 
-  assertEquals(result.value.name, "Dr Malcolm");
+  assert.deepStrictEqual(result.value.name, "Dr Malcolm");
 });
 
-Deno.test("optional doesn't throw validation error due to being null", async () => {
+test("optional doesn't throw validation error due to being null", async () => {
   const userSchema = schema({
     name: rules<string>("required|string"),
-    metadata: optional(schema({
-      age: rules<number>("numeric|min:18"),
-    })),
+    metadata: optional(
+      schema({
+        age: rules<number>("numeric|min:18"),
+      }),
+    ),
   });
 
   const result = await userSchema["~standard"].validate({
@@ -47,5 +49,5 @@ Deno.test("optional doesn't throw validation error due to being null", async () 
     );
   }
 
-  assertEquals(result.value.name, "Dr Malcolm");
+  assert.deepStrictEqual(result.value.name, "Dr Malcolm");
 });

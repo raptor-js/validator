@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { decimal } from "./rule.ts";
 
-Deno.test("decimal rule validates floating-point number successfully", async () => {
+test("decimal rule validates floating-point number successfully", async () => {
   const decimalSchema = decimal();
 
   const result = await decimalSchema["~standard"].validate(3.14);
@@ -16,10 +14,10 @@ Deno.test("decimal rule validates floating-point number successfully", async () 
     );
   }
 
-  assertEquals(result.value, 3.14);
+  assert.deepStrictEqual(result.value, 3.14);
 });
 
-Deno.test("decimal rule validates negative decimal successfully", async () => {
+test("decimal rule validates negative decimal successfully", async () => {
   const decimalSchema = decimal();
 
   const result = await decimalSchema["~standard"].validate(-2.5);
@@ -30,10 +28,10 @@ Deno.test("decimal rule validates negative decimal successfully", async () => {
     );
   }
 
-  assertEquals(result.value, -2.5);
+  assert.deepStrictEqual(result.value, -2.5);
 });
 
-Deno.test("decimal rule rejects integer", async () => {
+test("decimal rule rejects integer", async () => {
   const decimalSchema = decimal();
 
   const result = await decimalSchema["~standard"].validate(42);
@@ -42,14 +40,14 @@ Deno.test("decimal rule rejects integer", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
     result.issues[0].message,
     "The field must be a decimal (not an integer)",
   );
 });
 
-Deno.test("decimal rule rejects string", async () => {
+test("decimal rule rejects string", async () => {
   const decimalSchema = decimal();
 
   const result = await decimalSchema["~standard"].validate("3.14");
@@ -58,11 +56,14 @@ Deno.test("decimal rule rejects string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a decimal");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a decimal",
+  );
 });
 
-Deno.test("decimal rule rejects NaN", async () => {
+test("decimal rule rejects NaN", async () => {
   const decimalSchema = decimal();
 
   const result = await decimalSchema["~standard"].validate(NaN);
@@ -71,10 +72,10 @@ Deno.test("decimal rule rejects NaN", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("decimal rule allows null/undefined to pass through", async () => {
+test("decimal rule allows null/undefined to pass through", async () => {
   const decimalSchema = decimal();
 
   const nullResult = await decimalSchema["~standard"].validate(null);
@@ -84,6 +85,6 @@ Deno.test("decimal rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { uppercase } from "./rule.ts";
 
-Deno.test("uppercase rule validates uppercase string successfully", async () => {
+test("uppercase rule validates uppercase string successfully", async () => {
   const uppercaseSchema = uppercase();
 
   const result = await uppercaseSchema["~standard"].validate("HELLO");
@@ -16,10 +14,10 @@ Deno.test("uppercase rule validates uppercase string successfully", async () => 
     );
   }
 
-  assertEquals(result.value, "HELLO");
+  assert.deepStrictEqual(result.value, "HELLO");
 });
 
-Deno.test("uppercase rule validates uppercase with numbers successfully", async () => {
+test("uppercase rule validates uppercase with numbers successfully", async () => {
   const uppercaseSchema = uppercase();
 
   const result = await uppercaseSchema["~standard"].validate("HELLO123");
@@ -30,10 +28,10 @@ Deno.test("uppercase rule validates uppercase with numbers successfully", async 
     );
   }
 
-  assertEquals(result.value, "HELLO123");
+  assert.deepStrictEqual(result.value, "HELLO123");
 });
 
-Deno.test("uppercase rule rejects lowercase string", async () => {
+test("uppercase rule rejects lowercase string", async () => {
   const uppercaseSchema = uppercase();
 
   const result = await uppercaseSchema["~standard"].validate("hello");
@@ -42,11 +40,14 @@ Deno.test("uppercase rule rejects lowercase string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be uppercase");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be uppercase",
+  );
 });
 
-Deno.test("uppercase rule rejects mixed case string", async () => {
+test("uppercase rule rejects mixed case string", async () => {
   const uppercaseSchema = uppercase();
 
   const result = await uppercaseSchema["~standard"].validate("Hello");
@@ -55,21 +56,20 @@ Deno.test("uppercase rule rejects mixed case string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("uppercase rule allows null/undefined to pass through", async () => {
+test("uppercase rule allows null/undefined to pass through", async () => {
   const uppercaseSchema = uppercase();
 
   const nullResult = await uppercaseSchema["~standard"].validate(null);
-  const undefinedResult = await uppercaseSchema["~standard"].validate(
-    undefined,
-  );
+  const undefinedResult =
+    await uppercaseSchema["~standard"].validate(undefined);
 
   if ("issues" in nullResult || "issues" in undefinedResult) {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

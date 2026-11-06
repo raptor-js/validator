@@ -19,28 +19,34 @@ export function min(minimum: number): StandardSchemaV1<unknown> {
 
         if (typeof value === "string" && value.length < minimum) {
           return {
-            issues: [{
-              message: `The field must be at least ${minimum} in length`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be at least ${minimum} in length`,
+                path: [],
+              },
+            ],
           };
         }
 
         if (typeof value === "number" && value < minimum) {
           return {
-            issues: [{
-              message: `The field must be at least ${minimum}`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be at least ${minimum}`,
+                path: [],
+              },
+            ],
           };
         }
 
         if (Array.isArray(value) && value.length < minimum) {
           return {
-            issues: [{
-              message: `The field must be at least ${minimum} in length`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must be at least ${minimum} in length`,
+                path: [],
+              },
+            ],
           };
         }
 

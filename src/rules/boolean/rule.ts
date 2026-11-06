@@ -17,10 +17,12 @@ export function boolean(): StandardSchemaV1<boolean | null | undefined> {
 
         if (typeof value !== "boolean") {
           return {
-            issues: [{
-              message: "The field must be a boolean",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a boolean",
+                path: [],
+              },
+            ],
           };
         }
 

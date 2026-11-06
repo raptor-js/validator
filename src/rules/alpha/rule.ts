@@ -17,19 +17,23 @@ export function alpha(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
         if (!/^[a-zA-Z]+$/.test(value)) {
           return {
-            issues: [{
-              message: "The field must contain only alphabetic characters",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must contain only alphabetic characters",
+                path: [],
+              },
+            ],
           };
         }
 

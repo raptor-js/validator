@@ -20,10 +20,12 @@ export function date(): StandardSchemaV1<
         if (value instanceof Date) {
           if (isNaN(value.getTime())) {
             return {
-              issues: [{
-                message: "The field must be a valid date",
-                path: [],
-              }],
+              issues: [
+                {
+                  message: "The field must be a valid date",
+                  path: [],
+                },
+              ],
             };
           }
           return { value };
@@ -34,10 +36,12 @@ export function date(): StandardSchemaV1<
 
           if (isNaN(parsed.getTime())) {
             return {
-              issues: [{
-                message: "The field must be a valid date",
-                path: [],
-              }],
+              issues: [
+                {
+                  message: "The field must be a valid date",
+                  path: [],
+                },
+              ],
             };
           }
           return { value };
@@ -48,20 +52,24 @@ export function date(): StandardSchemaV1<
 
           if (isNaN(parsed.getTime())) {
             return {
-              issues: [{
-                message: "The field must be a valid date",
-                path: [],
-              }],
+              issues: [
+                {
+                  message: "The field must be a valid date",
+                  path: [],
+                },
+              ],
             };
           }
           return { value };
         }
 
         return {
-          issues: [{
-            message: "The field must be a valid date",
-            path: [],
-          }],
+          issues: [
+            {
+              message: "The field must be a valid date",
+              path: [],
+            },
+          ],
         };
       },
     },

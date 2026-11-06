@@ -17,19 +17,23 @@ export function lowercase(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
         if (value !== value.toLowerCase()) {
           return {
-            issues: [{
-              message: "The field must be lowercase",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be lowercase",
+                path: [],
+              },
+            ],
           };
         }
 

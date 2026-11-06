@@ -17,19 +17,23 @@ export function alphaNum(): StandardSchemaV1<string | null | undefined> {
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
         if (!/^[a-zA-Z0-9]+$/.test(value)) {
           return {
-            issues: [{
-              message: "The field must contain only letters and numbers",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must contain only letters and numbers",
+                path: [],
+              },
+            ],
           };
         }
 

@@ -1,8 +1,9 @@
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { required } from "./rule.ts";
 
-Deno.test("required rule validates non-empty value successfully", async () => {
+test("required rule validates non-empty value successfully", async () => {
   const requiredSchema = required();
 
   const result = await requiredSchema["~standard"].validate("test");
@@ -13,10 +14,10 @@ Deno.test("required rule validates non-empty value successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "test");
+  assert.deepStrictEqual(result.value, "test");
 });
 
-Deno.test("required rule rejects null", async () => {
+test("required rule rejects null", async () => {
   const requiredSchema = required();
 
   const result = await requiredSchema["~standard"].validate(null);
@@ -25,11 +26,11 @@ Deno.test("required rule rejects null", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field is required");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues[0].message, "The field is required");
 });
 
-Deno.test("required rule rejects undefined", async () => {
+test("required rule rejects undefined", async () => {
   const requiredSchema = required();
 
   const result = await requiredSchema["~standard"].validate(undefined);
@@ -38,10 +39,10 @@ Deno.test("required rule rejects undefined", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("required rule rejects empty string", async () => {
+test("required rule rejects empty string", async () => {
   const requiredSchema = required();
 
   const result = await requiredSchema["~standard"].validate("");
@@ -50,10 +51,10 @@ Deno.test("required rule rejects empty string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("required rule rejects whitespace-only string", async () => {
+test("required rule rejects whitespace-only string", async () => {
   const requiredSchema = required();
 
   const result = await requiredSchema["~standard"].validate("   ");
@@ -62,5 +63,5 @@ Deno.test("required rule rejects whitespace-only string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });

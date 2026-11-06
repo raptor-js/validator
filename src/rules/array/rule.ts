@@ -17,10 +17,12 @@ export function array(): StandardSchemaV1<unknown[] | null | undefined> {
 
         if (!Array.isArray(value)) {
           return {
-            issues: [{
-              message: "The field must be an array",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be an array",
+                path: [],
+              },
+            ],
           };
         }
 

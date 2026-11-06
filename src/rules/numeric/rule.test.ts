@@ -1,11 +1,9 @@
-/// <reference lib="deno.ns" />
-// deno-lint-ignore-file
-
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { numeric } from "./rule.ts";
 
-Deno.test("numeric rule validates number successfully", async () => {
+test("numeric rule validates number successfully", async () => {
   const numericSchema = numeric();
 
   const result = await numericSchema["~standard"].validate(18);
@@ -16,10 +14,10 @@ Deno.test("numeric rule validates number successfully", async () => {
     );
   }
 
-  assertEquals(result.value, 18);
+  assert.deepStrictEqual(result.value, 18);
 });
 
-Deno.test("numeric rule validates numeric string successfully", async () => {
+test("numeric rule validates numeric string successfully", async () => {
   const numericSchema = numeric();
 
   const result = await numericSchema["~standard"].validate("42");
@@ -30,10 +28,10 @@ Deno.test("numeric rule validates numeric string successfully", async () => {
     );
   }
 
-  assertEquals(result.value, 42);
+  assert.deepStrictEqual(result.value, 42);
 });
 
-Deno.test("numeric rule rejects non-numeric string", async () => {
+test("numeric rule rejects non-numeric string", async () => {
   const numericSchema = numeric();
 
   const result = await numericSchema["~standard"].validate("invalid");
@@ -42,13 +40,13 @@ Deno.test("numeric rule rejects non-numeric string", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues.length, 1);
-  assertEquals(result.issues[0].message, "The field must be numeric");
-  assertEquals(result.issues[0].path, []);
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(result.issues.length, 1);
+  assert.deepStrictEqual(result.issues[0].message, "The field must be numeric");
+  assert.deepStrictEqual(result.issues[0].path, []);
 });
 
-Deno.test("numeric rule allows null/undefined to pass through", async () => {
+test("numeric rule allows null/undefined to pass through", async () => {
   const numericSchema = numeric();
 
   const nullResult = await numericSchema["~standard"].validate(null);
@@ -58,11 +56,11 @@ Deno.test("numeric rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });
 
-Deno.test("numeric rule rejects NaN", async () => {
+test("numeric rule rejects NaN", async () => {
   const numericSchema = numeric();
 
   const result = await numericSchema["~standard"].validate(NaN);
@@ -71,5 +69,5 @@ Deno.test("numeric rule rejects NaN", async () => {
     throw new Error("Expected validation to fail for NaN");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });

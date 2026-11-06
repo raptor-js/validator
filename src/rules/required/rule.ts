@@ -13,19 +13,23 @@ export function required(): StandardSchemaV1<unknown> {
       validate(value) {
         if (value === undefined || value === null) {
           return {
-            issues: [{
-              message: "The field is required",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field is required",
+                path: [],
+              },
+            ],
           };
         }
 
         if (typeof value === "string" && value.trim() === "") {
           return {
-            issues: [{
-              message: "The field is required",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field is required",
+                path: [],
+              },
+            ],
           };
         }
 

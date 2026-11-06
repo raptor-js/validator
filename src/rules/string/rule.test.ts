@@ -1,8 +1,9 @@
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { string } from "./rule.ts";
 
-Deno.test("string rule validates string successfully", async () => {
+test("string rule validates string successfully", async () => {
   const stringSchema = string();
 
   const result = await stringSchema["~standard"].validate("hello");
@@ -13,10 +14,10 @@ Deno.test("string rule validates string successfully", async () => {
     );
   }
 
-  assertEquals(result.value, "hello");
+  assert.deepStrictEqual(result.value, "hello");
 });
 
-Deno.test("string rule rejects number", async () => {
+test("string rule rejects number", async () => {
   const stringSchema = string();
 
   const result = await stringSchema["~standard"].validate(42);
@@ -25,11 +26,14 @@ Deno.test("string rule rejects number", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be a string");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be a string",
+  );
 });
 
-Deno.test("string rule rejects boolean", async () => {
+test("string rule rejects boolean", async () => {
   const stringSchema = string();
 
   const result = await stringSchema["~standard"].validate(true);
@@ -38,10 +42,10 @@ Deno.test("string rule rejects boolean", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("string rule rejects array", async () => {
+test("string rule rejects array", async () => {
   const stringSchema = string();
 
   const result = await stringSchema["~standard"].validate([]);
@@ -50,10 +54,10 @@ Deno.test("string rule rejects array", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("string rule allows null/undefined to pass through", async () => {
+test("string rule allows null/undefined to pass through", async () => {
   const stringSchema = string();
 
   const nullResult = await stringSchema["~standard"].validate(null);
@@ -63,6 +67,6 @@ Deno.test("string rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });

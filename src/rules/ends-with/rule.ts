@@ -21,10 +21,12 @@ export function endsWith(
 
         if (typeof value !== "string") {
           return {
-            issues: [{
-              message: "The field must be a string",
-              path: [],
-            }],
+            issues: [
+              {
+                message: "The field must be a string",
+                path: [],
+              },
+            ],
           };
         }
 
@@ -34,10 +36,12 @@ export function endsWith(
           const suffixList = suffixes.join(", ");
 
           return {
-            issues: [{
-              message: `The field must end with one of: ${suffixList}`,
-              path: [],
-            }],
+            issues: [
+              {
+                message: `The field must end with one of: ${suffixList}`,
+                path: [],
+              },
+            ],
           };
         }
 

@@ -1,5 +1,8 @@
 // Copyright 2026, Raptor. All rights reserved. MIT license.
 
+// Pulls in the global Request.validate types for anyone importing this module.
+export type {} from "./src/types/request.ts";
+
 export { rules } from "./src/rules.ts";
 export { schema } from "./src/schema.ts";
 export { optional } from "./src/optional.ts";

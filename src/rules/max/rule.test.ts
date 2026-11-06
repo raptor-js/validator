@@ -1,8 +1,9 @@
-import { assertEquals, assertExists } from "@std/assert";
+import assert from "node:assert/strict";
+import { test } from "node:test";
 
 import { max } from "./rule.ts";
 
-Deno.test("max rule validates string within maximum length", async () => {
+test("max rule validates string within maximum length", async () => {
   const maxSchema = max(10);
 
   const result = await maxSchema["~standard"].validate("hello");
@@ -13,10 +14,10 @@ Deno.test("max rule validates string within maximum length", async () => {
     );
   }
 
-  assertEquals(result.value, "hello");
+  assert.deepStrictEqual(result.value, "hello");
 });
 
-Deno.test("max rule rejects string exceeding maximum length", async () => {
+test("max rule rejects string exceeding maximum length", async () => {
   const maxSchema = max(3);
 
   const result = await maxSchema["~standard"].validate("hello");
@@ -25,14 +26,14 @@ Deno.test("max rule rejects string exceeding maximum length", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
     result.issues[0].message,
     "The field must be no more than 3 in length",
   );
 });
 
-Deno.test("max rule validates number within maximum value", async () => {
+test("max rule validates number within maximum value", async () => {
   const maxSchema = max(100);
 
   const result = await maxSchema["~standard"].validate(50);
@@ -43,10 +44,10 @@ Deno.test("max rule validates number within maximum value", async () => {
     );
   }
 
-  assertEquals(result.value, 50);
+  assert.deepStrictEqual(result.value, 50);
 });
 
-Deno.test("max rule rejects number exceeding maximum value", async () => {
+test("max rule rejects number exceeding maximum value", async () => {
   const maxSchema = max(10);
 
   const result = await maxSchema["~standard"].validate(20);
@@ -55,11 +56,14 @@ Deno.test("max rule rejects number exceeding maximum value", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
-  assertEquals(result.issues[0].message, "The field must be no more than 10");
+  assert.ok(result.issues != null);
+  assert.deepStrictEqual(
+    result.issues[0].message,
+    "The field must be no more than 10",
+  );
 });
 
-Deno.test("max rule validates array within maximum length", async () => {
+test("max rule validates array within maximum length", async () => {
   const maxSchema = max(5);
 
   const result = await maxSchema["~standard"].validate([1, 2]);
@@ -70,10 +74,10 @@ Deno.test("max rule validates array within maximum length", async () => {
     );
   }
 
-  assertEquals(result.value, [1, 2]);
+  assert.deepStrictEqual(result.value, [1, 2]);
 });
 
-Deno.test("max rule rejects array exceeding maximum length", async () => {
+test("max rule rejects array exceeding maximum length", async () => {
   const maxSchema = max(2);
 
   const result = await maxSchema["~standard"].validate([1, 2, 3]);
@@ -82,10 +86,10 @@ Deno.test("max rule rejects array exceeding maximum length", async () => {
     throw new Error("Expected validation to fail but it succeeded");
   }
 
-  assertExists(result.issues);
+  assert.ok(result.issues != null);
 });
 
-Deno.test("max rule allows null/undefined to pass through", async () => {
+test("max rule allows null/undefined to pass through", async () => {
   const maxSchema = max(5);
 
   const nullResult = await maxSchema["~standard"].validate(null);
@@ -95,6 +99,6 @@ Deno.test("max rule allows null/undefined to pass through", async () => {
     throw new Error("Expected null/undefined to pass through");
   }
 
-  assertEquals(nullResult.value, null);
-  assertEquals(undefinedResult.value, undefined);
+  assert.deepStrictEqual(nullResult.value, null);
+  assert.deepStrictEqual(undefinedResult.value, undefined);
 });
